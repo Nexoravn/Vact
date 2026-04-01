@@ -202,7 +202,7 @@ input[type=range].prog::-moz-range-thumb {
 
 .controls {
   display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-bottom: 20px;
+  gap: 6px; margin-bottom: 20px;
 }
 .ctrl-btn {
   border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
@@ -213,7 +213,7 @@ input[type=range].prog::-moz-range-thumb {
 }
 .ctrl-btn:hover { background: var(--surface2); border-color: var(--border2); }
 .ctrl-btn:disabled { opacity: .25; cursor: not-allowed; }
-.ctrl-skip { width: 42px; height: 42px; font-size: 11px; flex-direction: column; gap: 1px; }
+.ctrl-skip { width: 40px; height: 42px; font-size: 11px; flex-direction: column; gap: 1px; }
 .ctrl-skip span:first-child { font-size: 15px; line-height: 1; }
 .ctrl-ep { width: 42px; height: 42px; }
 .ctrl-ep svg { width: 20px; height: 20px; }
@@ -224,6 +224,12 @@ input[type=range].prog::-moz-range-thumb {
 }
 .ctrl-play:hover { background: #1ed760; border-color: #1ed760; }
 .ctrl-play svg { width: 24px; height: 24px; }
+
+/* Nút tốc độ mới */
+.ctrl-speed {
+  width: 42px; height: 42px; font-size: 13px; font-weight: 600;
+  color: var(--green); border-color: var(--green-dim);
+}
 
 .divider { border: none; border-top: 0.5px solid var(--border); margin: 0 0 14px; }
 
@@ -381,6 +387,7 @@ input[type=range].prog::-moz-range-thumb {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 3C5.88 3 1.5 7.38 1.5 12.5S5.88 22 11.5 22c4.47 0 8.3-2.73 9.82-6.66l-2.32-.79c-1.1 3.16-4.1 5.45-7.5 5.45-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5c3.12 0 5.75 1.97 6.86 4.72L16 11l5.5 1.5L20.5 7l-2.38 1.32C16.59 5.55 14.14 3 11.5 3z"/><text x="14.5" y="16" font-size="7" font-weight="600" font-family="sans-serif" fill="currentColor" text-anchor="middle">30</text></svg>
             <span>+30s</span>
           </button>
+          <button class="ctrl-btn ctrl-speed" id="speedBtn" onclick="changeSpeed()" title="Tốc độ phát">1x</button>
           <button class="ctrl-btn ctrl-ep" id="nextBtn" onclick="changeEp(1)" disabled title="Tập sau">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM16 6v12h2V6h-2z"/></svg>
           </button>
@@ -406,6 +413,8 @@ input[type=range].prog::-moz-range-thumb {
 
 <script>
 let cur=1, total=0, archId='', stTitle='', isDragging=false, toastTimer=null, resumeData=null;
+let playbackSpeed = 1; // Biến lưu tốc độ phát
+const speeds = [1, 1.25, 1.5, 1.75, 2]; // Danh sách các mức tốc độ
 const ap = document.getElementById('ap');
 const pb = document.getElementById('pb');
 
@@ -413,6 +422,8 @@ const pb = document.getElementById('pb');
 ap.addEventListener('loadedmetadata', () => {
   pb.max = Math.floor(ap.duration);
   document.getElementById('tDur').textContent = fmt(ap.duration);
+  // Re-apply speed when new source loaded
+  ap.playbackRate = playbackSpeed; 
   updatePbStyle();
 });
 ap.addEventListener('timeupdate', () => {
@@ -459,6 +470,15 @@ function skip(s) {
 function togglePlay() {
   if (ap.paused) ap.play().catch(() => {}); else ap.pause();
 }
+
+function changeSpeed() {
+  let idx = speeds.indexOf(playbackSpeed);
+  idx = (idx + 1) % speeds.length;
+  playbackSpeed = speeds[idx];
+  ap.playbackRate = playbackSpeed;
+  document.getElementById('speedBtn').textContent = playbackSpeed + 'x';
+}
+
 function onEnded() {
   saveProgress();
   if (cur < total) {
@@ -627,6 +647,8 @@ function playEp(ep, seekTo) {
   ap.addEventListener('loadedmetadata', function once() {
     ap.removeEventListener('loadedmetadata', once);
     if (seekTo > 0) ap.currentTime = seekTo;
+    // Apply speed
+    ap.playbackRate = playbackSpeed;
     ap.play().catch(() => {});
     pb.value = seekTo || 0;
     document.getElementById('tCur').textContent = fmt(seekTo || 0);
