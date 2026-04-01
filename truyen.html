@@ -1,0 +1,313 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.root{padding:1rem 0}
+
+.top-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:12px}
+.top-label{font-size:13px;color:var(--color-text-secondary);margin-bottom:6px}
+.link-row{display:flex;gap:8px}
+input.url-in{flex:1;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+input.url-in:focus{box-shadow:0 0 0 2px #9FE1CB}
+.go-btn{padding:9px 20px;border:none;border-radius:var(--border-radius-md);background:#1D9E75;color:#fff;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.go-btn:hover{background:#0F6E56}
+.go-btn:disabled{opacity:.45;cursor:not-allowed}
+.hint-line{font-size:11px;color:var(--color-text-tertiary);margin-top:6px}
+.err-line{font-size:12px;color:var(--color-text-danger);margin-top:6px;min-height:16px}
+
+.player-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+
+.story-banner{background:#E1F5EE;padding:1.25rem;display:flex;gap:14px;align-items:center;border-bottom:0.5px solid var(--color-border-tertiary)}
+.avatar{width:54px;height:54px;border-radius:var(--border-radius-md);background:#9FE1CB;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:500;color:#085041;flex-shrink:0}
+.story-info{flex:1;min-width:0}
+.story-name{font-size:15px;font-weight:500;color:#085041;line-height:1.4;margin-bottom:3px}
+.story-meta{font-size:12px;color:#0F6E56}
+.badges{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.badge{font-size:11px;padding:2px 9px;border-radius:999px;border:0.5px solid}
+.bdg-green{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5}
+.bdg-blue{background:#E6F1FB;color:#185FA5;border-color:#85B7EB}
+.bdg-amber{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
+.bdg-gray{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:var(--color-border-secondary)}
+
+.player-body{padding:1.25rem}
+
+.ep-display{text-align:center;margin-bottom:12px}
+.ep-big{font-size:28px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.ep-sub{font-size:12px;color:var(--color-text-tertiary);margin-top:3px}
+
+audio{width:100%;margin-bottom:10px;accent-color:#1D9E75}
+
+.ctrl-row{display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:10px}
+.ctrl-btn{padding:8px 20px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);font-size:13px;cursor:pointer;transition:background .12s}
+.ctrl-btn:hover{background:var(--color-background-secondary)}
+.ctrl-btn:disabled{opacity:.3;cursor:not-allowed}
+.next-main{background:#1D9E75;color:#fff;border-color:#1D9E75;font-weight:500}
+.next-main:hover{background:#0F6E56;border-color:#0F6E56}
+.next-main:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:var(--color-border-secondary)}
+
+.toast{display:none;align-items:center;gap:8px;background:#E1F5EE;border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px;color:#0F6E56;margin-bottom:10px}
+.t-dot{width:7px;height:7px;border-radius:50%;background:#1D9E75;flex-shrink:0;animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:10px 0}
+
+.ep-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ep-title{font-size:12px;color:var(--color-text-tertiary)}
+.scan-btn{font-size:11px;padding:3px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer}
+.scan-btn:hover{background:var(--color-background-secondary)}
+.ep-grid{display:flex;flex-wrap:wrap;gap:5px;max-height:150px;overflow-y:auto;padding-right:2px}
+.ep-grid::-webkit-scrollbar{width:3px}
+.ep-grid::-webkit-scrollbar-thumb{background:var(--color-border-secondary);border-radius:4px}
+.ep-btn{padding:5px 0;width:52px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);font-size:12px;cursor:pointer;transition:background .1s;text-align:center}
+.ep-btn:hover{background:var(--color-background-secondary)}
+.ep-btn.past{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:transparent}
+.ep-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75;font-weight:500}
+
+.url-row{display:flex;gap:6px;align-items:center;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary)}
+.url-txt{font-size:10px;color:var(--color-text-tertiary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp-btn{font-size:11px;padding:4px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.cp-btn:hover{background:var(--color-background-secondary)}
+
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--color-text-tertiary);font-size:13px}
+.empty-icon{width:40px;height:40px;border-radius:50%;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+
+.scanning-row{font-size:12px;color:var(--color-text-secondary);display:none;align-items:center;gap:6px;margin-top:4px}
+.mini-spin{width:11px;height:11px;border:1.5px solid var(--color-border-tertiary);border-top-color:#1D9E75;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+
+<div class="root">
+
+<div class="top-card">
+  <div class="top-label">Dán link trang truyện</div>
+  <div class="link-row">
+    <input class="url-in" id="urlIn" placeholder="https://audiotruyenfull.com/ten-truyen/" oninput="onUrlChange()" onkeydown="if(event.key==='Enter')onLoad()"/>
+    <button class="go-btn" id="goBtn" onclick="onLoad()">Tải truyện</button>
+  </div>
+  <div class="hint-line">Hỗ trợ audiotruyenfull.com / .org — tự nhận Archive ID, tự dò số tập</div>
+  <div class="err-line" id="errLine"></div>
+  <div class="scanning-row" id="scanRow"><div class="mini-spin"></div><span id="scanTxt"></span></div>
+</div>
+
+<div class="player-card">
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </div>
+    Dán link truyện bên trên để bắt đầu nghe
+  </div>
+
+  <div id="storyView" style="display:none">
+    <div class="story-banner">
+      <div class="avatar" id="avt">TT</div>
+      <div class="story-info">
+        <div class="story-name" id="sName">—</div>
+        <div class="story-meta" id="sMeta"></div>
+        <div class="badges" id="sBadges"></div>
+      </div>
+    </div>
+    <div class="player-body">
+      <div class="ep-display">
+        <div class="ep-big" id="epBig">Tập 1</div>
+        <div class="ep-sub" id="epSub">/ — tập</div>
+      </div>
+      <audio id="ap" controls preload="auto"></audio>
+      <div class="toast" id="toast"><div class="t-dot"></div><span id="toastTxt"></span></div>
+      <div class="ctrl-row">
+        <button class="ctrl-btn" id="prevBtn" onclick="changeEp(-1)" disabled>&#9664; Tập trước</button>
+        <button class="ctrl-btn next-main" id="nextBtn" onclick="changeEp(1)" disabled>Tập sau &#9654;</button>
+      </div>
+      <hr class="divider">
+      <div class="ep-header">
+        <div class="ep-title" id="epTitle">Danh sách tập</div>
+        <button class="scan-btn" onclick="scanMore()">+ Tải thêm tập</button>
+      </div>
+      <div class="ep-grid" id="epGrid"></div>
+      <div class="url-row">
+        <div class="url-txt" id="urlTxt"></div>
+        <button class="cp-btn" onclick="copyUrl()">Sao chép</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+let cur=1,total=0,archId='',padLen=3,toastTimer=null,storyLoaded=false;
+
+function slugToPascal(s){return s.split('-').map(w=>w?w[0].toUpperCase()+w.slice(1):'').join('');}
+
+function extractArchive(url){
+  let slug=url.replace(/\/$/, '').split('/').pop().split('?')[0];
+  const knownSuffixes=['TH'];
+  let base=slugToPascal(slug);
+  return base+'TH';
+}
+
+function onUrlChange(){
+  const v=document.getElementById('urlIn').value.trim();
+  document.getElementById('errLine').textContent='';
+}
+
+async function onLoad(){
+  const url=document.getElementById('urlIn').value.trim();
+  const err=document.getElementById('errLine');
+  err.textContent='';
+  if(!url){err.textContent='Vui lòng nhập link truyện';return;}
+  
+  const slugM=url.match(/audiotruyenfull\.\w+\/([a-z0-9][a-z0-9-]+)\/?/i);
+  if(!slugM){err.textContent='Link không đúng định dạng audiotruyenfull.com/...';return;}
+  
+  archId=extractArchive(url);
+  const slug=slugM[1];
+  const title=slug.split('-').map(w=>w?w[0].toUpperCase()+w.slice(1):'').join(' ');
+
+  document.getElementById('goBtn').disabled=true;
+  showScanning('Đang dò số tập...');
+  
+  total=await probeTotal(archId);
+  hideScanning();
+  document.getElementById('goBtn').disabled=false;
+
+  if(total===0){err.textContent='Không tìm thấy audio. Kiểm tra lại link hoặc truyện chưa có audio.';return;}
+
+  renderStory({title, archiveId:archId, totalEps:total, slug});
+}
+
+async function probeTotal(aid){
+  let count=0;
+  const batchSize=20;
+  let offset=1;
+  while(true){
+    const checks=[];
+    for(let i=offset;i<offset+batchSize;i++) checks.push(checkEp(aid,i));
+    const results=await Promise.all(checks);
+    let lastOk=0;
+    for(let i=0;i<results.length;i++){if(results[i])lastOk=offset+i;}
+    if(lastOk===0&&offset===1)break;
+    if(lastOk<offset+batchSize-1){count=lastOk;break;}
+    count=lastOk; offset+=batchSize;
+    if(offset>500)break;
+  }
+  return count;
+}
+
+async function checkEp(aid,ep){
+  const n=String(ep).padStart(padLen,'0');
+  const url=`https://archive.org/download/${aid}/${n}-${aid}.mp3`;
+  try{
+    const r=await fetch(url,{method:'HEAD',signal:AbortSignal.timeout(5000)});
+    return r.ok||r.status===206||r.status===301||r.status===302;
+  }catch{return false;}
+}
+
+function showScanning(txt){
+  const r=document.getElementById('scanRow');
+  r.style.display='flex';
+  document.getElementById('scanTxt').textContent=txt;
+}
+function hideScanning(){document.getElementById('scanRow').style.display='none';}
+
+async function scanMore(){
+  if(!archId)return;
+  const newTotal=total+20;
+  document.querySelector('.scan-btn').disabled=true;
+  showScanning('Đang tìm thêm tập...');
+  const checks=[];
+  for(let i=total+1;i<=newTotal;i++)checks.push(checkEp(archId,i));
+  const results=await Promise.all(checks);
+  let added=0;
+  for(let i=0;i<results.length;i++){
+    if(results[i]){
+      total++;added++;
+      addEpBtn(total);
+    } else break;
+  }
+  hideScanning();
+  document.querySelector('.scan-btn').disabled=false;
+  document.getElementById('epTitle').textContent=`Danh sách tập (${total})`;
+  document.getElementById('epSub').textContent=`/ ${total} tập`;
+  if(added===0)document.getElementById('errLine').textContent='Không có thêm tập mới.';
+}
+
+function addEpBtn(ep){
+  const grid=document.getElementById('epGrid');
+  const b=document.createElement('button');
+  b.className='ep-btn';b.textContent='Tập '+ep;b.id='eb'+ep;
+  b.onclick=()=>playEp(ep);
+  grid.appendChild(b);
+}
+
+function renderStory(info){
+  archId=info.archiveId; total=info.totalEps;
+  const init=info.title.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'TT';
+  document.getElementById('avt').textContent=init;
+  document.getElementById('sName').textContent=info.title;
+  document.getElementById('sMeta').textContent='Archive: '+info.archiveId;
+  document.getElementById('epSub').textContent='/ '+total+' tập';
+  document.getElementById('epTitle').textContent='Danh sách tập ('+total+')';
+
+  const bdg=document.getElementById('sBadges');
+  bdg.innerHTML='';
+  const b1=document.createElement('span');
+  b1.className='badge bdg-green';b1.textContent=total+' tập';bdg.appendChild(b1);
+
+  const grid=document.getElementById('epGrid');
+  grid.innerHTML='';
+  for(let i=1;i<=total;i++){
+    const b=document.createElement('button');
+    b.className='ep-btn';b.textContent='Tập '+i;b.id='eb'+i;
+    b.onclick=()=>playEp(i);
+    grid.appendChild(b);
+  }
+
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('storyView').style.display='block';
+  storyLoaded=true;
+
+  const ap=document.getElementById('ap');
+  ap.onended=()=>{
+    if(cur<total){
+      showToast('Tự chuyển sang Tập '+(cur+1)+'...',true);
+      toastTimer=setTimeout(()=>{hideToast();changeEp(1);},2500);
+    } else {
+      showToast('Đã nghe hết '+total+' tập !',false);
+      setTimeout(hideToast,3500);
+    }
+  };
+
+  playEp(1);
+}
+
+function buildUrl(ep){return`https://archive.org/download/${archId}/${String(ep).padStart(padLen,'0')}-${archId}.mp3`;}
+
+function playEp(ep){
+  if(ep<1||ep>total)return;
+  if(toastTimer){clearTimeout(toastTimer);toastTimer=null;}
+  hideToast();
+  cur=ep;
+  const url=buildUrl(ep);
+  const ap=document.getElementById('ap');
+  ap.src=url;ap.load();ap.play().catch(()=>{});
+  document.getElementById('epBig').textContent='Tập '+ep;
+  document.getElementById('urlTxt').textContent=url;
+  document.getElementById('prevBtn').disabled=ep<=1;
+  document.getElementById('nextBtn').disabled=ep>=total;
+  document.querySelectorAll('.ep-btn').forEach((b,i)=>{
+    b.classList.remove('active','past');
+    if(i+1<ep)b.classList.add('past');
+  });
+  const ab=document.getElementById('eb'+ep);
+  if(ab){ab.classList.add('active');ab.scrollIntoView({block:'nearest',behavior:'smooth'});}
+}
+
+function changeEp(d){playEp(cur+d);}
+function showToast(txt,pulse){
+  const t=document.getElementById('toast');
+  t.style.display='flex';
+  document.getElementById('toastTxt').textContent=txt;
+  document.querySelector('.t-dot').style.animation=pulse?'pulse 1s ease infinite':'none';
+}
+function hideToast(){document.getElementById('toast').style.display='none';}
+function copyUrl(){navigator.clipboard.writeText(document.getElementById('urlTxt').textContent).catch(()=>{});}
+</script>
