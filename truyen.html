@@ -4,84 +4,153 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Nghe Truyện Audio</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface2: #1f2937;
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(255,255,255,0.14);
-  --green: #1DB954;
-  --green-dark: #17a349;
-  --green-glow: rgba(29,185,84,0.18);
-  --green-dim: rgba(29,185,84,0.08);
-  --text: #e6edf3;
-  --text2: #8b949e;
-  --text3: #484f58;
-  --amber: #f0a500;
-  --amber-bg: rgba(240,165,0,0.1);
-  --amber-border: rgba(240,165,0,0.3);
-  --red: #f85149;
-  --radius: 12px;
-  --radius-sm: 8px;
+  --bg: #080c10;
+  --bg2: #0d1219;
+  --surface: #111720;
+  --surface2: #181f2b;
+  --surface3: #1e2736;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --green: #00d46a;
+  --green2: #00b859;
+  --green-glow: rgba(0,212,106,0.2);
+  --green-dim: rgba(0,212,106,0.08);
+  --green-dim2: rgba(0,212,106,0.14);
+  --blue: #4f8ef7;
+  --blue-dim: rgba(79,142,247,0.1);
+  --amber: #f5a623;
+  --amber-dim: rgba(245,166,35,0.1);
+  --amber-border: rgba(245,166,35,0.28);
+  --red: #ff5a5a;
+  --text: #e8eef6;
+  --text2: #7a8799;
+  --text3: #3d4a58;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-xs: 6px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: 'Sora', sans-serif;
   font-size: 14px;
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 24px 16px 48px;
+  padding: 28px 16px 64px;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgba(0,212,106,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 100%, rgba(79,142,247,0.05) 0%, transparent 60%);
 }
-.app { width: 100%; max-width: 520px; }
 
-.logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.app { width: 100%; max-width: 540px; }
+
+/* ── Header ── */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.logo-row { display: flex; align-items: center; gap: 12px; }
 .logo-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--green); display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 12px;
+  background: linear-gradient(135deg, #00d46a 0%, #00a655 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,212,106,0.3);
 }
-.logo-icon svg { width: 20px; height: 20px; }
-.logo-text { font-size: 16px; font-weight: 600; color: var(--text); }
-.logo-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.logo-icon svg { width: 22px; height: 22px; }
+.logo-text { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.logo-sub { font-size: 11px; color: var(--text2); margin-top: 1px; font-family: 'JetBrains Mono', monospace; }
 
+.header-actions { display: flex; gap: 6px; }
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--surface); border: 0.5px solid var(--border2);
+  color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.icon-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.icon-btn.active { color: var(--green); border-color: var(--green-dim2); background: var(--green-dim); }
+
+/* ── Source Tabs ── */
+.source-tabs {
+  display: flex; gap: 6px; margin-bottom: 12px;
+}
+.src-tab {
+  flex: 1; padding: 9px 12px; border-radius: var(--radius-sm);
+  border: 0.5px solid var(--border); background: var(--surface);
+  color: var(--text2); font-family: inherit; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; text-align: center; position: relative;
+  overflow: hidden;
+}
+.src-tab.active {
+  border-color: var(--green-dim2); background: var(--green-dim);
+  color: var(--green);
+}
+.src-tab::before {
+  content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 2px; background: var(--green); border-radius: 2px;
+  transition: width .2s;
+}
+.src-tab.active::before { width: 60%; }
+.src-badge {
+  display: inline-block; font-size: 9px; padding: 1px 5px;
+  background: rgba(0,212,106,0.15); color: var(--green);
+  border-radius: 4px; margin-left: 5px; font-weight: 600; vertical-align: middle;
+}
+.src-badge.new { background: rgba(245,166,35,0.15); color: var(--amber); }
+
+/* ── Card ── */
 .card {
   background: var(--surface);
   border: 0.5px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 20px;
-  margin-bottom: 12px;
+  padding: 18px 20px;
+  margin-bottom: 10px;
 }
+label { font-size: 11px; color: var(--text2); display: block; margin-bottom: 8px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
-label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 7px; }
 .input-row { display: flex; gap: 8px; }
+.input-wrap { flex: 1; position: relative; }
 input[type=text] {
-  flex: 1; padding: 10px 14px;
-  background: var(--bg); border: 0.5px solid var(--border2);
+  width: 100%; padding: 11px 14px;
+  background: var(--bg2); border: 0.5px solid var(--border2);
   border-radius: var(--radius-sm); color: var(--text); font-size: 14px;
   font-family: inherit; outline: none; transition: border-color .2s, box-shadow .2s;
 }
 input[type=text]:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-glow); }
 input[type=text]::placeholder { color: var(--text3); }
-.go-btn {
-  padding: 10px 20px; border: none; border-radius: var(--radius-sm);
-  background: var(--green); color: #000; font-size: 14px; font-weight: 600;
-  font-family: inherit; cursor: pointer; white-space: nowrap; transition: background .15s, transform .1s;
-}
-.go-btn:hover { background: #1ed760; }
-.go-btn:active { transform: scale(.97); }
-.go-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
-.hint { font-size: 11px; color: var(--text3); margin-top: 7px; line-height: 1.6; }
-.err { font-size: 12px; color: var(--red); margin-top: 7px; min-height: 14px; }
+.clear-input {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--surface3); border: none; color: var(--text2);
+  cursor: pointer; display: none; align-items: center; justify-content: center;
+  font-size: 13px; line-height: 1;
+}
+.clear-input.show { display: flex; }
+
+.go-btn {
+  padding: 11px 22px; border: none; border-radius: var(--radius-sm);
+  background: var(--green); color: #000; font-size: 13px; font-weight: 700;
+  font-family: inherit; cursor: pointer; white-space: nowrap;
+  transition: all .15s; letter-spacing: 0.2px;
+}
+.go-btn:hover { background: #0ff07a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,106,0.35); }
+.go-btn:active { transform: translateY(0); }
+.go-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.hint { font-size: 11px; color: var(--text3); margin-top: 8px; line-height: 1.6; }
+.err { font-size: 12px; color: var(--red); margin-top: 7px; min-height: 15px; }
 
 .scan-row {
   display: none; align-items: center; gap: 8px;
-  font-size: 12px; color: var(--text2); margin-top: 8px;
+  font-size: 12px; color: var(--text2); margin-top: 9px;
 }
 .mini-spin {
   width: 13px; height: 13px; border-radius: 50%;
@@ -90,179 +159,276 @@ input[type=text]::placeholder { color: var(--text3); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.resume-card {
-  display: none; background: var(--amber-bg);
-  border: 0.5px solid var(--amber-border);
-  border-radius: var(--radius); padding: 14px 20px; margin-bottom: 12px;
+/* ── History Panel ── */
+.history-panel {
+  display: none; background: var(--surface);
+  border: 0.5px solid var(--border); border-radius: var(--radius);
+  padding: 16px 20px; margin-bottom: 10px;
 }
-.resume-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.resume-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
-.resume-title { font-size: 12px; font-weight: 600; color: var(--amber); }
+.history-panel.show { display: block; }
+.history-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.history-title { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+.clear-hist-btn {
+  font-size: 11px; padding: 3px 10px; border: 0.5px solid var(--border2);
+  border-radius: 99px; background: transparent; color: var(--text3);
+  font-family: inherit; cursor: pointer; transition: all .12s;
+}
+.clear-hist-btn:hover { color: var(--red); border-color: rgba(255,90,90,0.3); }
+.history-list { display: flex; flex-direction: column; gap: 5px; }
+.hist-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--radius-sm);
+  background: var(--surface2); border: 0.5px solid var(--border);
+  cursor: pointer; transition: all .12s;
+}
+.hist-item:hover { border-color: var(--border2); background: var(--surface3); }
+.hist-icon { font-size: 16px; flex-shrink: 0; }
+.hist-info { flex: 1; min-width: 0; }
+.hist-name { font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.hist-src {
+  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hist-src.archive { background: var(--blue-dim); color: var(--blue); }
+.hist-src.new { background: var(--green-dim); color: var(--green); }
+.hist-del {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: transparent; border: none; color: var(--text3);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; transition: all .12s;
+}
+.hist-del:hover { background: rgba(255,90,90,0.1); color: var(--red); }
+.hist-empty { text-align: center; padding: 20px; color: var(--text3); font-size: 12px; }
+
+/* ── Resume Card ── */
+.resume-card {
+  display: none;
+  background: var(--surface);
+  border: 0.5px solid var(--amber-border);
+  border-radius: var(--radius); padding: 15px 20px; margin-bottom: 10px;
+  position: relative; overflow: hidden;
+}
+.resume-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+}
+.resume-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.resume-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); animation: pulse 1.5s ease infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.resume-title { font-size: 11px; font-weight: 600; color: var(--amber); text-transform: uppercase; letter-spacing: 0.5px; }
 .resume-info { font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.5; }
 .resume-btns { display: flex; gap: 8px; }
 .btn-resume {
   padding: 8px 18px; border: none; border-radius: var(--radius-sm);
-  background: var(--amber); color: #000; font-size: 13px; font-weight: 600;
+  background: var(--amber); color: #000; font-size: 12px; font-weight: 700;
   font-family: inherit; cursor: pointer; transition: opacity .15s;
 }
 .btn-resume:hover { opacity: .85; }
 .btn-dismiss {
   padding: 8px 14px; border: 0.5px solid var(--amber-border);
   border-radius: var(--radius-sm); background: transparent;
-  color: var(--amber); font-size: 13px; font-family: inherit; cursor: pointer; transition: background .15s;
+  color: var(--amber); font-size: 12px; font-family: inherit; cursor: pointer;
 }
-.btn-dismiss:hover { background: var(--amber-bg); }
 
+/* ── Player Card ── */
 .player-card {
-  background: var(--surface); border: 0.5px solid var(--border);
+  background: var(--surface);
+  border: 0.5px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
 }
 .empty {
-  padding: 48px 20px; text-align: center;
+  padding: 56px 20px; text-align: center;
 }
 .empty-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--green-dim); display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--green-dim); border: 1px solid var(--green-dim2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
 }
-.empty-text { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.empty-text { font-size: 13px; color: var(--text2); line-height: 1.8; }
 
+/* ── Banner ── */
 .banner {
-  background: linear-gradient(135deg, #0a3d21 0%, #0d2b1a 100%);
+  background: linear-gradient(135deg, #05200f 0%, #0a1a14 50%, #08131f 100%);
   border-bottom: 0.5px solid var(--border);
-  padding: 20px;
+  padding: 22px 20px;
   display: flex; gap: 16px; align-items: center;
   position: relative; overflow: hidden;
 }
 .banner::before {
   content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 80% 50%, rgba(29,185,84,.12) 0%, transparent 70%);
+  background:
+    radial-gradient(circle at 85% 30%, rgba(0,212,106,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(79,142,247,0.06) 0%, transparent 40%);
 }
 .cover {
-  width: 68px; height: 68px; border-radius: 10px;
-  background: var(--green); display: flex; align-items: center; justify-content: center;
-  font-size: 24px; font-weight: 600; color: #000;
+  width: 72px; height: 72px; border-radius: 12px;
+  background: linear-gradient(135deg, #00d46a, #007a3d);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; color: #000;
   flex-shrink: 0; position: relative; z-index: 1;
-  box-shadow: 0 4px 20px rgba(29,185,84,.35);
+  box-shadow: 0 6px 24px rgba(0,212,106,0.3);
 }
 .banner-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .b-title {
-  font-size: 16px; font-weight: 600; color: #fff;
+  font-size: 16px; font-weight: 700; color: #fff;
   line-height: 1.3; margin-bottom: 4px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -0.2px;
 }
-.b-sub { font-size: 12px; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+.b-sub { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 9px; font-family: 'JetBrains Mono', monospace; }
 .badges { display: flex; gap: 5px; flex-wrap: wrap; }
 .badge {
-  font-size: 10px; padding: 2px 9px; border-radius: 999px;
-  border: 0.5px solid rgba(29,185,84,.4);
-  background: rgba(29,185,84,.12); color: #6fcf97; font-weight: 500;
+  font-size: 10px; padding: 3px 9px; border-radius: 999px;
+  font-weight: 600;
 }
-.badge-gray {
-  border-color: var(--border2); background: rgba(255,255,255,.06); color: var(--text2);
-}
+.badge-green { border: 0.5px solid rgba(0,212,106,0.4); background: rgba(0,212,106,0.1); color: #6fcf97; }
+.badge-blue { border: 0.5px solid rgba(79,142,247,0.3); background: rgba(79,142,247,0.1); color: #7eb8ff; }
+.badge-gray { border: 0.5px solid var(--border2); background: rgba(255,255,255,.06); color: var(--text2); }
+.badge-amber { border: 0.5px solid var(--amber-border); background: var(--amber-dim); color: var(--amber); }
 
+/* ── Player Body ── */
 .player-body { padding: 20px; }
 
-.ep-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
-.ep-big { font-size: 26px; font-weight: 600; color: var(--text); }
+.ep-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.ep-row-left { display: flex; align-items: baseline; gap: 8px; }
+.ep-big { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
 .ep-of { font-size: 13px; color: var(--text2); }
+.ep-src-indicator {
+  font-size: 10px; padding: 3px 8px; border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+}
+.ep-src-indicator.archive { background: var(--blue-dim); color: var(--blue); border: 0.5px solid rgba(79,142,247,0.2); }
+.ep-src-indicator.new-src { background: var(--green-dim); color: var(--green); border: 0.5px solid var(--green-dim2); }
 
 audio { display: none; }
 
-.progress-area { margin-bottom: 6px; }
+/* ── Progress ── */
+.progress-area { margin-bottom: 6px; position: relative; }
 input[type=range].prog {
   width: 100%; cursor: pointer;
   -webkit-appearance: none; appearance: none;
   height: 4px; border-radius: 4px;
-  background: var(--surface2);
-  outline: none; transition: height .15s;
+  background: var(--surface3); outline: none; transition: height .15s;
 }
 input[type=range].prog:hover { height: 5px; }
 input[type=range].prog::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 14px; height: 14px;
+  -webkit-appearance: none; width: 15px; height: 15px;
   border-radius: 50%; background: var(--green); cursor: pointer;
-  box-shadow: 0 0 0 3px var(--green-glow); transition: transform .15s;
+  box-shadow: 0 0 0 4px var(--green-glow); transition: transform .15s;
 }
 input[type=range].prog:hover::-webkit-slider-thumb { transform: scale(1.2); }
 input[type=range].prog::-moz-range-thumb {
-  width: 14px; height: 14px; border-radius: 50%; background: var(--green);
-  border: none; cursor: pointer;
+  width: 15px; height: 15px; border-radius: 50%; background: var(--green); border: none; cursor: pointer;
 }
-.time-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 18px; }
+.time-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 18px; font-family: 'JetBrains Mono', monospace; }
 
+/* ── Toast ── */
 .toast {
   display: none; align-items: center; gap: 8px;
-  background: var(--green-dim); border: 0.5px solid rgba(29,185,84,.2);
-  border-radius: var(--radius-sm); padding: 8px 12px;
+  background: var(--green-dim); border: 0.5px solid rgba(0,212,106,0.2);
+  border-radius: var(--radius-sm); padding: 9px 13px;
   font-size: 12px; color: #6fcf97; margin-bottom: 14px;
 }
 .toast-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 1s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
 
+/* ── Controls ── */
 .controls {
   display: flex; align-items: center; justify-content: center;
-  gap: 6px; margin-bottom: 20px;
+  gap: 7px; margin-bottom: 20px;
 }
 .ctrl-btn {
   border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
   background: transparent; color: var(--text); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: background .12s, border-color .12s;
-  font-family: inherit; font-weight: 500;
+  transition: all .12s; font-family: inherit; font-weight: 600;
 }
 .ctrl-btn:hover { background: var(--surface2); border-color: var(--border2); }
-.ctrl-btn:disabled { opacity: .25; cursor: not-allowed; }
-.ctrl-skip { width: 40px; height: 42px; font-size: 11px; flex-direction: column; gap: 1px; }
-.ctrl-skip span:first-child { font-size: 15px; line-height: 1; }
-.ctrl-ep { width: 42px; height: 42px; }
+.ctrl-btn:disabled { opacity: .22; cursor: not-allowed; }
+.ctrl-skip { width: 42px; height: 44px; font-size: 11px; flex-direction: column; gap: 1px; color: var(--text2); }
+.ctrl-skip span:first-child { font-size: 16px; line-height: 1; }
+.ctrl-ep { width: 44px; height: 44px; }
 .ctrl-ep svg { width: 20px; height: 20px; }
 .ctrl-play {
-  width: 58px; height: 58px; border-radius: 50%;
+  width: 62px; height: 62px; border-radius: 50%;
   background: var(--green); border-color: var(--green);
-  color: #000; margin: 0 4px;
+  color: #000; margin: 0 5px;
+  box-shadow: 0 4px 20px rgba(0,212,106,0.4);
 }
-.ctrl-play:hover { background: #1ed760; border-color: #1ed760; }
-.ctrl-play svg { width: 24px; height: 24px; }
-
-/* Nút tốc độ mới */
+.ctrl-play:hover { background: #0ff07a; border-color: #0ff07a; box-shadow: 0 6px 28px rgba(0,212,106,0.5); transform: scale(1.04); }
+.ctrl-play svg { width: 26px; height: 26px; }
 .ctrl-speed {
-  width: 42px; height: 42px; font-size: 13px; font-weight: 600;
-  color: var(--green); border-color: var(--green-dim);
+  width: 44px; height: 44px; font-size: 12px; font-weight: 700;
+  color: var(--green); border-color: var(--green-dim2); background: var(--green-dim);
 }
+.ctrl-speed:hover { background: var(--green-dim2); }
 
-.divider { border: none; border-top: 0.5px solid var(--border); margin: 0 0 14px; }
+/* ── Extras Row ── */
+.extras-row {
+  display: flex; gap: 8px; margin-bottom: 18px;
+}
+.ext-btn {
+  flex: 1; padding: 8px; border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--surface2);
+  color: var(--text2); font-size: 11px; font-family: inherit;
+  cursor: pointer; transition: all .12s; display: flex; align-items: center;
+  justify-content: center; gap: 5px; font-weight: 500;
+}
+.ext-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+.ext-btn.active { color: var(--green); border-color: var(--green-dim2); background: var(--green-dim); }
 
+/* ── Sleep Timer ── */
+.sleep-row {
+  display: none; background: var(--bg2);
+  border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 14px; margin-bottom: 14px;
+}
+.sleep-row.show { display: block; }
+.sleep-label { font-size: 11px; color: var(--text2); margin-bottom: 8px; font-weight: 500; }
+.sleep-opts { display: flex; gap: 6px; flex-wrap: wrap; }
+.sleep-opt {
+  padding: 5px 12px; border: 0.5px solid var(--border); border-radius: 99px;
+  background: transparent; color: var(--text2); font-size: 11px; font-family: inherit;
+  cursor: pointer; transition: all .12s;
+}
+.sleep-opt:hover { border-color: var(--border2); color: var(--text); }
+.sleep-opt.active { border-color: var(--green-dim2); background: var(--green-dim); color: var(--green); }
+
+/* ── Divider ── */
+.divider { border: none; border-top: 0.5px solid var(--border); margin: 0 0 16px; }
+
+/* ── Episode List ── */
 .ep-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .ep-section-label { font-size: 12px; color: var(--text2); font-weight: 500; }
 .more-btn {
-  font-size: 11px; padding: 4px 12px; border: 0.5px solid var(--border2);
+  font-size: 11px; padding: 5px 13px; border: 0.5px solid var(--border2);
   border-radius: 999px; background: transparent; color: var(--text2);
-  font-family: inherit; cursor: pointer; transition: background .12s, color .12s;
+  font-family: inherit; cursor: pointer; transition: all .12s;
 }
 .more-btn:hover { background: var(--surface2); color: var(--text); }
-
 .ep-grid {
   display: flex; flex-wrap: wrap; gap: 5px;
-  max-height: 160px; overflow-y: auto; padding-right: 2px; margin-bottom: 16px;
+  max-height: 168px; overflow-y: auto; padding-right: 2px; margin-bottom: 16px;
 }
 .ep-grid::-webkit-scrollbar { width: 3px; }
 .ep-grid::-webkit-scrollbar-track { background: transparent; }
 .ep-grid::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-
 .ep-btn {
-  width: 54px; padding: 6px 0; text-align: center;
+  width: 56px; padding: 6px 0; text-align: center;
   border: 0.5px solid var(--border); border-radius: var(--radius-sm);
   background: transparent; color: var(--text2); font-size: 12px;
   font-family: inherit; cursor: pointer; transition: all .12s;
 }
 .ep-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
-.ep-btn.past { color: var(--text3); border-color: transparent; background: rgba(255,255,255,.03); }
+.ep-btn.past { color: var(--text3); border-color: transparent; background: rgba(255,255,255,.025); }
 .ep-btn.active {
   background: var(--green); color: #000; border-color: var(--green);
-  font-weight: 600; box-shadow: 0 2px 12px var(--green-glow);
+  font-weight: 700; box-shadow: 0 2px 14px var(--green-glow);
 }
 
+/* ── URL Row ── */
 .url-row {
   display: flex; gap: 8px; align-items: center;
   padding-top: 14px; border-top: 0.5px solid var(--border);
@@ -270,7 +436,7 @@ input[type=range].prog::-moz-range-thumb {
 .url-txt {
   flex: 1; font-size: 10px; color: var(--text3);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-family: monospace; cursor: pointer; padding: 4px 0;
+  font-family: 'JetBrains Mono', monospace; cursor: pointer; padding: 4px 0;
 }
 .url-txt:hover { color: var(--text2); }
 .cp-btn {
@@ -279,151 +445,290 @@ input[type=range].prog::-moz-range-thumb {
   font-family: inherit; cursor: pointer; white-space: nowrap; transition: all .12s;
 }
 .cp-btn:hover { background: var(--surface2); color: var(--text); }
-.cp-btn.copied { color: var(--green); border-color: rgba(29,185,84,.4); }
+.cp-btn.copied { color: var(--green); border-color: rgba(0,212,106,0.4); }
+
+/* ── Sleep timer countdown ── */
+.sleep-display {
+  display: none; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--amber); background: var(--amber-dim);
+  border: 0.5px solid var(--amber-border); border-radius: var(--radius-sm);
+  padding: 7px 12px; margin-bottom: 14px;
+}
+.sleep-display.show { display: flex; }
+
+/* ── Volume ── */
+.volume-row {
+  display: none; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.volume-row.show { display: flex; }
+.vol-icon { color: var(--text2); flex-shrink: 0; }
+input[type=range].vol {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 3px; border-radius: 3px; background: var(--surface3); outline: none; cursor: pointer;
+}
+input[type=range].vol::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 13px; height: 13px;
+  border-radius: 50%; background: var(--green); cursor: pointer;
+}
+.vol-val { font-size: 11px; color: var(--text2); width: 32px; text-align: right; font-family: 'JetBrains Mono', monospace; }
+
+/* ── Notification badge ── */
+.notif-badge {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+  position: absolute; top: 5px; right: 5px;
+  box-shadow: 0 0 6px var(--green);
+}
 </style>
 </head>
 <body>
 <div class="app">
 
+<!-- Header -->
+<div class="header">
   <div class="logo-row">
     <div class="logo-icon">
       <svg viewBox="0 0 24 24" fill="none">
-        <path d="M9 18V5l12-2v13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9 18V5l12-2v13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
         <circle cx="6" cy="18" r="3" fill="white"/>
         <circle cx="18" cy="16" r="3" fill="white"/>
       </svg>
     </div>
     <div>
-      <div class="logo-text">Nghe Truyện Audio</div>
-      <div class="logo-sub">audiotruyenfull.com / .org</div>
+      <div class="logo-text">Nghe Truyện</div>
+      <div class="logo-sub">audio player v2</div>
     </div>
   </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="histBtn" onclick="toggleHistory()" title="Lịch sử" style="position:relative">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+        <polyline points="12 7 12 12 15 15"/>
+      </svg>
+    </button>
+    <button class="icon-btn" id="volBtn" onclick="toggleVolume()" title="Âm lượng">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11 5L6 9H2v6h4l5 4V5zm4.54 1.46a9 9 0 0 1 0 12.73M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
-  <div class="card">
-    <label>Dán link trang truyện</label>
-    <div class="input-row">
+<!-- History Panel -->
+<div class="history-panel" id="histPanel">
+  <div class="history-header">
+    <div class="history-title">🕘 Lịch sử nghe</div>
+    <button class="clear-hist-btn" onclick="clearHistory()">Xóa tất cả</button>
+  </div>
+  <div class="history-list" id="histList"></div>
+</div>
+
+<!-- Source Tabs -->
+<div class="source-tabs">
+  <button class="src-tab active" id="tabArchive" onclick="switchSource('archive')">
+    🗄 Archive.org <span class="src-badge">cũ</span>
+  </button>
+  <button class="src-tab" id="tabNew" onclick="switchSource('new')">
+    ⚡ audiotruyenfull.app <span class="src-badge new">mới</span>
+  </button>
+</div>
+
+<!-- Input Card -->
+<div class="card">
+  <label>Dán link trang truyện</label>
+  <div class="input-row">
+    <div class="input-wrap">
       <input type="text" id="urlIn" placeholder="https://audiotruyenfull.com/ten-truyen/"
-        onkeydown="if(event.key==='Enter')onLoad()"/>
-      <button class="go-btn" id="goBtn" onclick="onLoad()">Tải truyện</button>
+        onkeydown="if(event.key==='Enter')onLoad()" oninput="onInputChange()"/>
+      <button class="clear-input" id="clearBtn" onclick="clearInput()">×</button>
     </div>
-    <div class="scan-row" id="scanRow">
-      <div class="mini-spin"></div>
-      <span id="scanTxt">Đang dò số tập...</span>
-    </div>
-    <div class="err" id="errLine"></div>
-    <div class="hint">Tự nhận số tập · Lưu tiến độ nghe · Tự chuyển tập tiếp theo</div>
+    <button class="go-btn" id="goBtn" onclick="onLoad()">Tải truyện</button>
   </div>
 
-  <div class="resume-card" id="resumeCard">
-    <div class="resume-header">
-      <div class="resume-dot"></div>
-      <div class="resume-title">Tiếp tục nghe</div>
+  <!-- New source extra field -->
+  <div id="newSourceFields" style="display:none; margin-top:10px;">
+    <label>Hoặc nhập trực tiếp URL audio mẫu (tập 001)</label>
+    <div class="input-wrap">
+      <input type="text" id="sampleUrl" placeholder="https://audiotruyenfull.app/audio/TenTruyen/001-TenTruyen.mp3"
+        oninput="onSampleChange()"/>
     </div>
-    <div class="resume-info" id="resumeInfo">—</div>
-    <div class="resume-btns">
-      <button class="btn-resume" onclick="doResume()">▶ Nghe tiếp</button>
-      <button class="btn-dismiss" onclick="dismissResume()">Bỏ qua</button>
+    <div class="hint" style="margin-top:6px; color: var(--green); opacity:.7;">
+      🔍 Tự phát hiện tên thư mục và tiền tố từ URL mẫu
     </div>
   </div>
 
-  <div class="player-card">
-    <div id="emptyState" class="empty">
-      <div class="empty-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <path d="M9 18V5l12-2v13" stroke="#1DB954" stroke-width="1.5" stroke-linecap="round"/>
-          <circle cx="6" cy="18" r="3" fill="#1DB954"/>
-          <circle cx="18" cy="16" r="3" fill="#1DB954"/>
-        </svg>
+  <div class="scan-row" id="scanRow">
+    <div class="mini-spin"></div>
+    <span id="scanTxt">Đang dò số tập...</span>
+  </div>
+  <div class="err" id="errLine"></div>
+  <div class="hint" id="hintText">Tự nhận số tập · Lưu tiến độ · Tự chuyển tập · Hẹn giờ ngủ</div>
+</div>
+
+<!-- Resume Card -->
+<div class="resume-card" id="resumeCard">
+  <div class="resume-header">
+    <div class="resume-dot"></div>
+    <div class="resume-title">Tiếp tục nghe</div>
+  </div>
+  <div class="resume-info" id="resumeInfo">—</div>
+  <div class="resume-btns">
+    <button class="btn-resume" onclick="doResume()">▶ Nghe tiếp</button>
+    <button class="btn-dismiss" onclick="dismissResume()">Bỏ qua</button>
+  </div>
+</div>
+
+<!-- Player Card -->
+<div class="player-card">
+  <div id="emptyState" class="empty">
+    <div class="empty-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18V5l12-2v13" stroke="#00d46a" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="6" cy="18" r="3" fill="#00d46a"/>
+        <circle cx="18" cy="16" r="3" fill="#00d46a"/>
+      </svg>
+    </div>
+    <div class="empty-text">Dán link truyện bên trên<br/>rồi nhấn <strong>Tải truyện</strong> để bắt đầu</div>
+  </div>
+
+  <div id="storyView" style="display:none">
+    <div class="banner">
+      <div class="cover" id="cover">TT</div>
+      <div class="banner-info">
+        <div class="b-title" id="bTitle">—</div>
+        <div class="b-sub" id="bSub"></div>
+        <div class="badges" id="bBadges"></div>
       </div>
-      <div class="empty-text">Dán link truyện bên trên<br/>rồi nhấn <strong>Tải truyện</strong> để bắt đầu</div>
     </div>
 
-    <div id="storyView" style="display:none">
-      <div class="banner">
-        <div class="cover" id="cover">TT</div>
-        <div class="banner-info">
-          <div class="b-title" id="bTitle">—</div>
-          <div class="b-sub" id="bSub"></div>
-          <div class="badges" id="bBadges"></div>
-        </div>
-      </div>
-
-      <div class="player-body">
-        <div class="ep-row">
+    <div class="player-body">
+      <div class="ep-row">
+        <div class="ep-row-left">
           <div class="ep-big" id="epBig">Tập 1</div>
           <div class="ep-of" id="epOf">/ —</div>
         </div>
+        <div class="ep-src-indicator archive" id="srcIndicator">archive.org</div>
+      </div>
 
-        <audio id="ap" preload="auto"></audio>
+      <audio id="ap" preload="auto"></audio>
 
-        <div class="progress-area">
-          <input type="range" class="prog" id="pb" min="0" value="0" step="1"
-            oninput="onSeek()" onmousedown="isDragging=true"
-            onmouseup="endSeek()" ontouchstart="isDragging=true" ontouchend="endSeek()"/>
+      <!-- Volume -->
+      <div class="volume-row" id="volRow">
+        <svg class="vol-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        </svg>
+        <input type="range" class="vol" id="volSlider" min="0" max="100" value="100" oninput="setVolume()"/>
+        <div class="vol-val" id="volVal">100%</div>
+      </div>
+
+      <div class="progress-area">
+        <input type="range" class="prog" id="pb" min="0" value="0" step="1"
+          oninput="onSeek()" onmousedown="isDragging=true"
+          onmouseup="endSeek()" ontouchstart="isDragging=true" ontouchend="endSeek()"/>
+      </div>
+      <div class="time-row">
+        <span id="tCur">0:00</span>
+        <span id="tDur">0:00</span>
+      </div>
+
+      <!-- Sleep timer display -->
+      <div class="sleep-display" id="sleepDisplay">
+        <span>😴</span>
+        <span id="sleepCountdown">Hẹn giờ: 30:00</span>
+        <button onclick="cancelSleep()" style="margin-left:auto;background:none;border:none;color:var(--amber);cursor:pointer;font-size:12px;">✕</button>
+      </div>
+
+      <div class="toast" id="toast">
+        <div class="toast-dot"></div>
+        <span id="toastTxt"></span>
+      </div>
+
+      <!-- Extra buttons -->
+      <div class="extras-row">
+        <button class="ext-btn" id="sleepBtn" onclick="toggleSleepPanel()">
+          <span>😴</span> Hẹn giờ ngủ
+        </button>
+        <button class="ext-btn" id="loopBtn" onclick="toggleLoop()">
+          <span>🔁</span> Lặp tập
+        </button>
+        <button class="ext-btn" onclick="copyUrl()">
+          <span>📋</span> Copy link
+        </button>
+      </div>
+
+      <!-- Sleep panel -->
+      <div class="sleep-row" id="sleepRow">
+        <div class="sleep-label">Tắt nhạc sau:</div>
+        <div class="sleep-opts">
+          <button class="sleep-opt" onclick="setSleep(15)">15 phút</button>
+          <button class="sleep-opt" onclick="setSleep(30)">30 phút</button>
+          <button class="sleep-opt" onclick="setSleep(45)">45 phút</button>
+          <button class="sleep-opt" onclick="setSleep(60)">1 tiếng</button>
+          <button class="sleep-opt" onclick="setSleep(90)">90 phút</button>
         </div>
-        <div class="time-row">
-          <span id="tCur">0:00</span>
-          <span id="tDur">0:00</span>
-        </div>
+      </div>
 
-        <div class="toast" id="toast">
-          <div class="toast-dot"></div>
-          <span id="toastTxt"></span>
-        </div>
+      <div class="controls">
+        <button class="ctrl-btn ctrl-ep" id="prevBtn" onclick="changeEp(-1)" disabled title="Tập trước">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="ctrl-btn ctrl-skip" onclick="skip(-15)" title="-15s">
+          <span>⏮</span><span>-15s</span>
+        </button>
+        <button class="ctrl-btn ctrl-play" id="playBtn" onclick="togglePlay()">
+          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="ctrl-btn ctrl-skip" onclick="skip(30)" title="+30s">
+          <span>⏭</span><span>+30s</span>
+        </button>
+        <button class="ctrl-btn ctrl-speed" id="speedBtn" onclick="changeSpeed()" title="Tốc độ phát">1x</button>
+        <button class="ctrl-btn ctrl-ep" id="nextBtn" onclick="changeEp(1)" disabled title="Tập sau">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
 
-        <div class="controls">
-          <button class="ctrl-btn ctrl-ep" id="prevBtn" onclick="changeEp(-1)" disabled title="Tập trước">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-          </button>
-          <button class="ctrl-btn ctrl-skip" onclick="skip(-15)" title="-15 giây">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 3C8.36 3 4.91 5.55 3.5 9.17L6 10c1-2.75 3.63-4.72 6.75-4.72 4 0 7.25 3.26 7.25 7.25S16.75 19.78 12.75 19.78c-3.5 0-6.43-2.29-7.39-5.45l-2.32.79C4.45 19.27 8.28 22 12.75 22 18.12 22 22.5 17.62 22.5 12.25S18.12 2.5 12.5 3z"/><text x="8.5" y="16" font-size="7" font-weight="600" font-family="sans-serif" fill="currentColor" text-anchor="middle">15</text></svg>
-            <span>-15s</span>
-          </button>
-          <button class="ctrl-btn ctrl-play" id="playBtn" onclick="togglePlay()">
-            <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          </button>
-          <button class="ctrl-btn ctrl-skip" onclick="skip(30)" title="+30 giây">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 3C5.88 3 1.5 7.38 1.5 12.5S5.88 22 11.5 22c4.47 0 8.3-2.73 9.82-6.66l-2.32-.79c-1.1 3.16-4.1 5.45-7.5 5.45-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5c3.12 0 5.75 1.97 6.86 4.72L16 11l5.5 1.5L20.5 7l-2.38 1.32C16.59 5.55 14.14 3 11.5 3z"/><text x="14.5" y="16" font-size="7" font-weight="600" font-family="sans-serif" fill="currentColor" text-anchor="middle">30</text></svg>
-            <span>+30s</span>
-          </button>
-          <button class="ctrl-btn ctrl-speed" id="speedBtn" onclick="changeSpeed()" title="Tốc độ phát">1x</button>
-          <button class="ctrl-btn ctrl-ep" id="nextBtn" onclick="changeEp(1)" disabled title="Tập sau">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM16 6v12h2V6h-2z"/></svg>
-          </button>
-        </div>
+      <hr class="divider"/>
 
-        <hr class="divider"/>
+      <div class="ep-section-header">
+        <div class="ep-section-label" id="epLabel">Danh sách tập</div>
+        <button class="more-btn" onclick="scanMore()">+ Tìm tập mới</button>
+      </div>
+      <div class="ep-grid" id="epGrid"></div>
 
-        <div class="ep-section-header">
-          <div class="ep-section-label" id="epLabel">Danh sách tập</div>
-          <button class="more-btn" onclick="scanMore()">+ Tìm tập mới</button>
-        </div>
-        <div class="ep-grid" id="epGrid"></div>
-
-        <div class="url-row">
-          <div class="url-txt" id="urlTxt" onclick="copyUrl()" title="Nhấn để sao chép"></div>
-          <button class="cp-btn" id="cpBtn" onclick="copyUrl()">Sao chép</button>
-        </div>
+      <div class="url-row">
+        <div class="url-txt" id="urlTxt" onclick="copyUrl()" title="Nhấn để sao chép"></div>
+        <button class="cp-btn" id="cpBtn" onclick="copyUrl()">Sao chép</button>
       </div>
     </div>
   </div>
-
 </div>
 
+</div>
 <script>
-let cur=1, total=0, archId='', stTitle='', isDragging=false, toastTimer=null, resumeData=null;
-let playbackSpeed = 1; // Biến lưu tốc độ phát
-const speeds = [1, 1.25, 1.5, 1.75, 2]; // Danh sách các mức tốc độ
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let cur = 1, total = 0, archId = '', stTitle = '', isDragging = false;
+let toastTimer = null, resumeData = null;
+let playbackSpeed = 1;
+let isLooping = false;
+let sleepTimer = null, sleepEndsAt = 0;
+let currentSource = 'archive'; // 'archive' or 'new'
+let newSrcFolder = '', newSrcPrefix = ''; // for new source
+
+const speeds = [0.75, 1, 1.25, 1.5, 1.75, 2, 2.5];
 const ap = document.getElementById('ap');
 const pb = document.getElementById('pb');
 
-/* ── Audio events ── */
+/* ══════════════════════════════════════════
+   AUDIO EVENTS
+══════════════════════════════════════════ */
 ap.addEventListener('loadedmetadata', () => {
   pb.max = Math.floor(ap.duration);
   document.getElementById('tDur').textContent = fmt(ap.duration);
-  // Re-apply speed when new source loaded
-  ap.playbackRate = playbackSpeed; 
+  ap.playbackRate = playbackSpeed;
+  ap.loop = isLooping;
   updatePbStyle();
 });
 ap.addEventListener('timeupdate', () => {
@@ -438,14 +743,21 @@ ap.addEventListener('play', () => setIcon(true));
 ap.addEventListener('pause', () => setIcon(false));
 ap.addEventListener('ended', onEnded);
 
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
 function fmt(s) {
   s = Math.floor(s || 0);
-  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return h + ':' + String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  return m + ':' + String(sec).padStart(2,'0');
 }
 
 function updatePbStyle() {
   const pct = pb.max > 0 ? (pb.value / pb.max) * 100 : 0;
-  pb.style.background = `linear-gradient(to right, #1DB954 ${pct}%, #1f2937 ${pct}%)`;
+  pb.style.background = `linear-gradient(to right, #00d46a ${pct}%, #1e2736 ${pct}%)`;
 }
 
 function setIcon(playing) {
@@ -457,16 +769,19 @@ function onSeek() {
   document.getElementById('tCur').textContent = fmt(pb.value);
   updatePbStyle();
 }
+
 function endSeek() {
   isDragging = false;
   ap.currentTime = parseInt(pb.value);
   if (ap.paused) ap.play().catch(() => {});
 }
+
 function skip(s) {
   ap.currentTime = Math.max(0, Math.min(ap.currentTime + s, ap.duration || 0));
   pb.value = Math.floor(ap.currentTime);
   onSeek();
 }
+
 function togglePlay() {
   if (ap.paused) ap.play().catch(() => {}); else ap.pause();
 }
@@ -479,28 +794,110 @@ function changeSpeed() {
   document.getElementById('speedBtn').textContent = playbackSpeed + 'x';
 }
 
+function toggleLoop() {
+  isLooping = !isLooping;
+  ap.loop = isLooping;
+  const btn = document.getElementById('loopBtn');
+  btn.classList.toggle('active', isLooping);
+  btn.innerHTML = `<span>🔁</span> ${isLooping ? 'Đang lặp' : 'Lặp tập'}`;
+}
+
 function onEnded() {
   saveProgress();
+  if (isLooping) return;
   if (cur < total) {
     showToast('Tự chuyển sang Tập ' + (cur + 1) + '...', true);
     toastTimer = setTimeout(() => { hideToast(); changeEp(1); }, 2500);
   } else {
-    showToast('Đã nghe hết ' + total + ' tập!', false);
+    showToast('🎉 Đã nghe hết ' + total + ' tập!', false);
     setTimeout(hideToast, 4000);
   }
 }
 
-/* ── LocalStorage ── */
+/* ══════════════════════════════════════════
+   VOLUME
+══════════════════════════════════════════ */
+function toggleVolume() {
+  const row = document.getElementById('volRow');
+  row.classList.toggle('show');
+  document.getElementById('volBtn').classList.toggle('active', row.classList.contains('show'));
+}
+
+function setVolume() {
+  const v = document.getElementById('volSlider').value;
+  ap.volume = v / 100;
+  document.getElementById('volVal').textContent = v + '%';
+  const pct = v;
+  document.getElementById('volSlider').style.background =
+    `linear-gradient(to right, #00d46a ${pct}%, #1e2736 ${pct}%)`;
+}
+
+/* ══════════════════════════════════════════
+   SLEEP TIMER
+══════════════════════════════════════════ */
+function toggleSleepPanel() {
+  const row = document.getElementById('sleepRow');
+  row.classList.toggle('show');
+  document.getElementById('sleepBtn').classList.toggle('active', row.classList.contains('show'));
+}
+
+function setSleep(minutes) {
+  if (sleepTimer) clearInterval(sleepTimer);
+  sleepEndsAt = Date.now() + minutes * 60000;
+
+  document.querySelectorAll('.sleep-opt').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const display = document.getElementById('sleepDisplay');
+  const countdown = document.getElementById('sleepCountdown');
+  display.classList.add('show');
+
+  sleepTimer = setInterval(() => {
+    const remaining = sleepEndsAt - Date.now();
+    if (remaining <= 0) {
+      ap.pause();
+      cancelSleep();
+      showToast('😴 Đã hẹn giờ tắt nhạc!', false);
+      setTimeout(hideToast, 3000);
+    } else {
+      countdown.textContent = 'Tắt sau: ' + fmt(remaining / 1000);
+    }
+  }, 1000);
+}
+
+function cancelSleep() {
+  if (sleepTimer) { clearInterval(sleepTimer); sleepTimer = null; }
+  document.getElementById('sleepDisplay').classList.remove('show');
+  document.querySelectorAll('.sleep-opt').forEach(b => b.classList.remove('active'));
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function showToast(txt, pulse) {
+  const el = document.getElementById('toast');
+  el.style.display = 'flex';
+  document.getElementById('toastTxt').textContent = txt;
+  document.querySelector('.toast-dot').style.animation = pulse ? 'pulse 1s ease infinite' : 'none';
+}
+function hideToast() { document.getElementById('toast').style.display = 'none'; }
+
+/* ══════════════════════════════════════════
+   LOCAL STORAGE
+══════════════════════════════════════════ */
 function storageKey() { return 'prog_' + archId; }
 function saveProgress() {
   if (!archId) return;
   try {
     localStorage.setItem(storageKey(), JSON.stringify({
       ep: cur, time: Math.floor(ap.currentTime),
-      title: stTitle, total, savedAt: Date.now()
+      title: stTitle, total, savedAt: Date.now(),
+      source: currentSource, folder: newSrcFolder, prefix: newSrcPrefix,
+      url: document.getElementById('urlIn').value.trim()
     }));
   } catch(e) {}
 }
+
 function loadProgress(aid) {
   try { const v = localStorage.getItem('prog_' + aid); return v ? JSON.parse(v) : null; }
   catch { return null; }
@@ -524,19 +921,158 @@ function doResume() {
   playEp(ep, t);
 }
 
-function showToast(txt, pulse) {
-  const el = document.getElementById('toast');
-  el.style.display = 'flex';
-  document.getElementById('toastTxt').textContent = txt;
-  document.querySelector('.toast-dot').style.animation = pulse ? 'pulse 1s ease infinite' : 'none';
+/* ══════════════════════════════════════════
+   HISTORY
+══════════════════════════════════════════ */
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('hist_v2') || '[]'); } catch { return []; }
 }
-function hideToast() { document.getElementById('toast').style.display = 'none'; }
+function saveHistory(list) {
+  try { localStorage.setItem('hist_v2', JSON.stringify(list)); } catch {}
+}
+function addToHistory(item) {
+  let list = getHistory();
+  list = list.filter(h => h.archId !== item.archId);
+  list.unshift({ ...item, savedAt: Date.now() });
+  if (list.length > 20) list = list.slice(0, 20);
+  saveHistory(list);
+  renderHistory();
+}
 
-/* ── Load story ── */
+function renderHistory() {
+  const list = getHistory();
+  const el = document.getElementById('histList');
+  if (list.length === 0) {
+    el.innerHTML = '<div class="hist-empty">Chưa có lịch sử nghe</div>';
+    return;
+  }
+  el.innerHTML = list.map((h, i) => {
+    const srcClass = h.source === 'new' ? 'new' : 'archive';
+    const srcLabel = h.source === 'new' ? 'new src' : 'archive';
+    const ago = timeAgo(h.savedAt);
+    return `
+      <div class="hist-item" onclick="loadFromHistory(${i})">
+        <div class="hist-icon">📚</div>
+        <div class="hist-info">
+          <div class="hist-name">${h.title}</div>
+          <div class="hist-meta">Tập ${h.ep || 1} · ${h.total || '?'} tập · ${ago} <span class="hist-src ${srcClass}">${srcLabel}</span></div>
+        </div>
+        <button class="hist-del" onclick="deleteHistory(event,${i})">×</button>
+      </div>`;
+  }).join('');
+}
+
+function timeAgo(ts) {
+  const d = Date.now() - ts;
+  if (d < 60000) return 'vừa xong';
+  if (d < 3600000) return Math.floor(d/60000) + ' phút trước';
+  if (d < 86400000) return Math.floor(d/3600000) + ' giờ trước';
+  return Math.floor(d/86400000) + ' ngày trước';
+}
+
+function loadFromHistory(idx) {
+  const list = getHistory();
+  const h = list[idx];
+  if (!h) return;
+  // Restore source
+  currentSource = h.source || 'archive';
+  switchSource(currentSource, true);
+  if (h.url) document.getElementById('urlIn').value = h.url;
+  if (h.source === 'new' && h.folder) {
+    newSrcFolder = h.folder;
+    newSrcPrefix = h.prefix || '';
+  }
+  // Trigger load
+  archId = h.archId;
+  stTitle = h.title;
+  total = h.total || 0;
+  dismissResume();
+  renderStory();
+  const saved = loadProgress(h.archId);
+  if (saved && saved.time > 5) showResume(saved);
+  else playEp(1, 0);
+  toggleHistory();
+}
+
+function deleteHistory(e, idx) {
+  e.stopPropagation();
+  let list = getHistory();
+  list.splice(idx, 1);
+  saveHistory(list);
+  renderHistory();
+}
+
+function clearHistory() {
+  saveHistory([]);
+  renderHistory();
+}
+
+function toggleHistory() {
+  const panel = document.getElementById('histPanel');
+  panel.classList.toggle('show');
+  document.getElementById('histBtn').classList.toggle('active', panel.classList.contains('show'));
+  if (panel.classList.contains('show')) renderHistory();
+}
+
+/* ══════════════════════════════════════════
+   SOURCE SWITCHING
+══════════════════════════════════════════ */
+function switchSource(src, silent) {
+  currentSource = src;
+  document.getElementById('tabArchive').classList.toggle('active', src === 'archive');
+  document.getElementById('tabNew').classList.toggle('active', src === 'new');
+  document.getElementById('newSourceFields').style.display = src === 'new' ? 'block' : 'none';
+
+  if (src === 'archive') {
+    document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.com/ten-truyen/';
+    document.getElementById('hintText').textContent = 'Nguồn: Archive.org · Tự nhận số tập · Lưu tiến độ';
+  } else {
+    document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.app/audio/TenTruyen/ (tùy chọn)';
+    document.getElementById('hintText').textContent = 'Nguồn mới: audiotruyenfull.app · Dán URL mẫu tập 001 bên dưới';
+  }
+}
+
+function onSampleChange() {
+  const url = document.getElementById('sampleUrl').value.trim();
+  // Parse: https://audiotruyenfull.app/audio/FOLDER/001-PREFIX.mp3
+  const m = url.match(/audiotruyenfull\.app\/audio\/([^/]+)\/\d+-(.+)\.mp3/i);
+  if (m) {
+    newSrcFolder = m[1];
+    newSrcPrefix = m[2];
+    document.getElementById('errLine').textContent = '';
+    // auto-fill archId for storage
+    archId = newSrcFolder;
+    stTitle = newSrcFolder.replace(/([A-Z])/g, ' $1').trim();
+  }
+}
+
+/* ══════════════════════════════════════════
+   INPUT HELPERS
+══════════════════════════════════════════ */
+function onInputChange() {
+  const v = document.getElementById('urlIn').value;
+  document.getElementById('clearBtn').classList.toggle('show', v.length > 0);
+}
+function clearInput() {
+  document.getElementById('urlIn').value = '';
+  document.getElementById('clearBtn').classList.remove('show');
+  document.getElementById('errLine').textContent = '';
+}
+
+/* ══════════════════════════════════════════
+   LOAD STORY
+══════════════════════════════════════════ */
 async function onLoad() {
   const url = document.getElementById('urlIn').value.trim();
   const err = document.getElementById('errLine');
   err.textContent = '';
+
+  if (currentSource === 'new') {
+    await onLoadNew();
+    return;
+  }
+
+  // Archive.org source (original logic)
   if (!url) { err.textContent = 'Vui lòng nhập link truyện'; return; }
   const m = url.match(/audiotruyenfull\.\w+\/([a-z0-9][a-z0-9-]+)\/?/i);
   if (!m) { err.textContent = 'Link không đúng định dạng audiotruyenfull.com/...'; return; }
@@ -546,27 +1082,82 @@ async function onLoad() {
   stTitle = slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
 
   document.getElementById('goBtn').disabled = true;
-  setScan(true, 'Đang dò số tập...');
-
-  total = await probeTotal(archId);
+  setScan(true, 'Đang dò số tập (archive.org)...');
+  total = await probeTotal(archId, 'archive');
   setScan(false);
   document.getElementById('goBtn').disabled = false;
 
   if (total === 0) { err.textContent = 'Không tìm thấy audio. Kiểm tra lại link.'; return; }
 
+  addToHistory({ archId, title: stTitle, total, ep: 1, source: 'archive', url });
   dismissResume();
   renderStory();
-
   const saved = loadProgress(archId);
   if (saved && saved.ep <= total && saved.time > 5) showResume(saved);
   else playEp(1, 0);
 }
 
-async function probeTotal(aid) {
+async function onLoadNew() {
+  const err = document.getElementById('errLine');
+  const sampleUrl = document.getElementById('sampleUrl').value.trim();
+
+  // Try parse from sample URL
+  if (sampleUrl) {
+    const m = sampleUrl.match(/audiotruyenfull\.app\/audio\/([^/]+)\/\d+-(.+)\.mp3/i);
+    if (m) {
+      newSrcFolder = m[1];
+      newSrcPrefix = m[2];
+    }
+  }
+
+  // Try parse from main URL
+  if (!newSrcFolder) {
+    const mainUrl = document.getElementById('urlIn').value.trim();
+    const m2 = mainUrl.match(/audiotruyenfull\.app\/audio\/([^/]+)/i);
+    if (m2) newSrcFolder = m2[1];
+  }
+
+  if (!newSrcFolder) {
+    err.textContent = 'Vui lòng dán URL audio mẫu (tập 001) vào ô bên dưới';
+    return;
+  }
+
+  // If no prefix yet, try inferring it
+  if (!newSrcPrefix) {
+    // Prefix = folder name (common pattern)
+    newSrcPrefix = newSrcFolder;
+  }
+
+  archId = newSrcFolder;
+  stTitle = newSrcFolder.replace(/([A-Z][a-z])/g, ' $1').trim();
+
+  document.getElementById('goBtn').disabled = true;
+  setScan(true, 'Đang dò số tập (audiotruyenfull.app)...');
+  total = await probeTotal(newSrcFolder, 'new');
+  setScan(false);
+  document.getElementById('goBtn').disabled = false;
+
+  if (total === 0) {
+    err.textContent = 'Không tìm thấy audio. Kiểm tra lại URL mẫu.';
+    return;
+  }
+
+  addToHistory({ archId, title: stTitle, total, ep: 1, source: 'new', folder: newSrcFolder, prefix: newSrcPrefix, url: document.getElementById('sampleUrl').value.trim() });
+  dismissResume();
+  renderStory();
+  const saved = loadProgress(archId);
+  if (saved && saved.ep <= total && saved.time > 5) showResume(saved);
+  else playEp(1, 0);
+}
+
+/* ══════════════════════════════════════════
+   PROBING
+══════════════════════════════════════════ */
+async function probeTotal(aid, src) {
   let count = 0, off = 1;
   while (true) {
     const batch = [];
-    for (let i = off; i < off + 20; i++) batch.push(checkEp(aid, i));
+    for (let i = off; i < off + 20; i++) batch.push(checkEp(aid, i, src));
     const res = await Promise.all(batch);
     let last = 0;
     for (let i = 0; i < res.length; i++) if (res[i]) last = off + i;
@@ -578,20 +1169,29 @@ async function probeTotal(aid) {
   return count;
 }
 
-async function checkEp(aid, ep) {
-  const n = String(ep).padStart(3, '0');
-  const url = `https://archive.org/download/${aid}/${n}-${aid}.mp3`;
+async function checkEp(aid, ep, src) {
+  const url = buildUrlFor(ep, aid, src);
   try {
-    const r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+    const r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(6000) });
     return r.ok || r.redirected || [301, 302, 206].includes(r.status);
   } catch { return false; }
+}
+
+function buildUrlFor(ep, aid, src) {
+  const n = String(ep).padStart(3, '0');
+  if (src === 'new') {
+    const folder = aid || newSrcFolder;
+    const prefix = newSrcPrefix || folder;
+    return `https://audiotruyenfull.app/audio/${folder}/${n}-${prefix}.mp3`;
+  }
+  return `https://archive.org/download/${aid}/${n}-${aid}.mp3`;
 }
 
 async function scanMore() {
   const start = total + 1;
   setScan(true, 'Đang tìm tập mới...');
   const batch = [];
-  for (let i = start; i < start + 20; i++) batch.push(checkEp(archId, i));
+  for (let i = start; i < start + 20; i++) batch.push(checkEp(archId, i, currentSource));
   const res = await Promise.all(batch);
   let added = 0;
   for (let i = 0; i < res.length; i++) {
@@ -609,19 +1209,32 @@ function setScan(on, txt) {
   if (txt) document.getElementById('scanTxt').textContent = txt;
 }
 
-/* ── Render ── */
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
 function renderStory() {
   const init = stTitle.split(' ').slice(0, 2).map(w => w[0] || '').join('').toUpperCase() || 'TT';
   document.getElementById('cover').textContent = init;
   document.getElementById('bTitle').textContent = stTitle;
-  document.getElementById('bSub').textContent = 'Archive: ' + archId;
+
+  const srcLabel = currentSource === 'new' ? 'audiotruyenfull.app' : 'archive.org';
+  const srcClass = currentSource === 'new' ? 'new-src' : 'archive';
+  document.getElementById('bSub').textContent = 'ID: ' + archId;
   document.getElementById('bBadges').innerHTML =
-    `<span class="badge">${total} tập</span><span class="badge badge-gray">archive.org</span>`;
+    `<span class="badge badge-green">${total} tập</span>` +
+    `<span class="badge ${currentSource === 'new' ? 'badge-green' : 'badge-blue'}">${srcLabel}</span>`;
+
   document.getElementById('epOf').textContent = `/ ${total} tập`;
   document.getElementById('epLabel').textContent = `Danh sách tập (${total})`;
+
+  const ind = document.getElementById('srcIndicator');
+  ind.textContent = srcLabel;
+  ind.className = 'ep-src-indicator ' + srcClass;
+
   const grid = document.getElementById('epGrid');
   grid.innerHTML = '';
   for (let i = 1; i <= total; i++) addEpBtn(i);
+
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('storyView').style.display = 'block';
 }
@@ -634,7 +1247,7 @@ function addEpBtn(ep) {
 }
 
 function buildUrl(ep) {
-  return `https://archive.org/download/${archId}/${String(ep).padStart(3,'0')}-${archId}.mp3`;
+  return buildUrlFor(ep, archId, currentSource);
 }
 
 function playEp(ep, seekTo) {
@@ -647,8 +1260,8 @@ function playEp(ep, seekTo) {
   ap.addEventListener('loadedmetadata', function once() {
     ap.removeEventListener('loadedmetadata', once);
     if (seekTo > 0) ap.currentTime = seekTo;
-    // Apply speed
     ap.playbackRate = playbackSpeed;
+    ap.loop = isLooping;
     ap.play().catch(() => {});
     pb.value = seekTo || 0;
     document.getElementById('tCur').textContent = fmt(seekTo || 0);
@@ -667,20 +1280,28 @@ function playEp(ep, seekTo) {
   });
   const ab = document.getElementById('eb' + ep);
   if (ab) { ab.classList.add('active'); ab.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  // Update history current ep
+  addToHistory({ archId, title: stTitle, total, ep, source: currentSource, folder: newSrcFolder, prefix: newSrcPrefix });
 }
 
 function changeEp(d) { saveProgress(); playEp(cur + d, 0); }
 
 function copyUrl() {
   const txt = document.getElementById('urlTxt').textContent;
+  if (!txt) return;
   navigator.clipboard.writeText(txt).then(() => {
     const btn = document.getElementById('cpBtn');
-    btn.textContent = 'Đã chép!'; btn.classList.add('copied');
+    btn.textContent = '✓ Đã chép'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'Sao chép'; btn.classList.remove('copied'); }, 2000);
+    showToast('📋 Đã sao chép link audio!', false);
+    setTimeout(hideToast, 2000);
   }).catch(() => {});
 }
 
 window.addEventListener('beforeunload', saveProgress);
+
+// Init
+renderHistory();
 </script>
 </body>
-</html>
+                                                           </html>
