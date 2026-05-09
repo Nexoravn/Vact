@@ -547,13 +547,13 @@ input[type=range].vol::-webkit-slider-thumb {
 
   <!-- New source extra field -->
   <div id="newSourceFields" style="display:none; margin-top:10px;">
-    <label>Hoặc nhập trực tiếp URL audio mẫu (tập 001)</label>
+    <label>URL audio mẫu tập 001 <span style="color:var(--text3);font-weight:400">(tùy chọn — chỉ cần nếu prefix khác tên folder)</span></label>
     <div class="input-wrap">
-      <input type="text" id="sampleUrl" placeholder="https://audiotruyenfull.app/audio/TenTruyen/001-TenTruyen.mp3"
+      <input type="text" id="sampleUrl" placeholder="https://audiotruyenfull.app/audio/Folder/001-Prefix.mp3  (nếu link trên không đủ)"
         oninput="onSampleChange()"/>
     </div>
-    <div class="hint" style="margin-top:6px; color: var(--green); opacity:.7;">
-      🔍 Tự phát hiện tên thư mục và tiền tố từ URL mẫu
+    <div class="hint" style="margin-top:6px; color: var(--green); opacity:.75;">
+      ✅ Chỉ cần dán link trang truyện bên trên là đủ · Ô này chỉ dùng khi cần ghi đè prefix
     </div>
   </div>
 
@@ -1027,8 +1027,8 @@ function switchSource(src, silent) {
     document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.com/ten-truyen/';
     document.getElementById('hintText').textContent = 'Nguồn: Archive.org · Tự nhận số tập · Lưu tiến độ';
   } else {
-    document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.app/audio/TenTruyen/ (tùy chọn)';
-    document.getElementById('hintText').textContent = 'Nguồn mới: audiotruyenfull.app · Dán URL mẫu tập 001 bên dưới';
+    document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.com/ten-truyen/';
+    document.getElementById('hintText').textContent = 'Cùng link như bình thường · Tự chuyển sang audiotruyenfull.app để lấy audio';
   }
 }
 
@@ -1097,39 +1097,55 @@ async function onLoad() {
   else playEp(1, 0);
 }
 
+// Shared slug → folder/prefix converter (same rule for both sources)
+function slugToId(slug) {
+  // "xoat-dai-ai-tien-ton-..." → "XoatDaiAiTienTon...TH"
+  return slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join('') + 'TH';
+}
+function slugToTitle(slug) {
+  return slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+}
+
 async function onLoadNew() {
   const err = document.getElementById('errLine');
+  const mainUrl = document.getElementById('urlIn').value.trim();
   const sampleUrl = document.getElementById('sampleUrl').value.trim();
 
-  // Try parse from sample URL
+  // Reset
+  newSrcFolder = ''; newSrcPrefix = '';
+
+  // 1) Parse từ URL mẫu mp3 trực tiếp: audiotruyenfull.app/audio/FOLDER/001-PREFIX.mp3
   if (sampleUrl) {
     const m = sampleUrl.match(/audiotruyenfull\.app\/audio\/([^/]+)\/\d+-(.+)\.mp3/i);
-    if (m) {
-      newSrcFolder = m[1];
-      newSrcPrefix = m[2];
+    if (m) { newSrcFolder = m[1]; newSrcPrefix = m[2]; }
+  }
+
+  // 2) Parse từ link trang truyện audiotruyenfull.com/slug/ (CÙNG CÁCH như archive tab)
+  if (!newSrcFolder && mainUrl) {
+    const m2 = mainUrl.match(/audiotruyenfull\.\w+\/([a-z0-9][a-z0-9-]+)\/?/i);
+    if (m2) {
+      const slug = m2[1];
+      newSrcFolder = slugToId(slug);   // XoatDai...TH
+      newSrcPrefix = newSrcFolder;     // prefix = folder (chuẩn của audiotruyenfull.app)
+      stTitle = slugToTitle(slug);
     }
   }
 
-  // Try parse from main URL
-  if (!newSrcFolder) {
-    const mainUrl = document.getElementById('urlIn').value.trim();
-    const m2 = mainUrl.match(/audiotruyenfull\.app\/audio\/([^/]+)/i);
-    if (m2) newSrcFolder = m2[1];
+  // 3) Parse folder trực tiếp từ URL audiotruyenfull.app/audio/FOLDER/
+  if (!newSrcFolder && mainUrl) {
+    const m3 = mainUrl.match(/audiotruyenfull\.app\/audio\/([^/?\s]+)/i);
+    if (m3) { newSrcFolder = m3[1]; newSrcPrefix = newSrcFolder; }
   }
 
   if (!newSrcFolder) {
-    err.textContent = 'Vui lòng dán URL audio mẫu (tập 001) vào ô bên dưới';
+    err.textContent = 'Vui lòng nhập link truyện (audiotruyenfull.com/...) hoặc URL audio mẫu bên dưới';
     return;
   }
 
-  // If no prefix yet, try inferring it
-  if (!newSrcPrefix) {
-    // Prefix = folder name (common pattern)
-    newSrcPrefix = newSrcFolder;
-  }
+  if (!newSrcPrefix) newSrcPrefix = newSrcFolder;
 
   archId = newSrcFolder;
-  stTitle = newSrcFolder.replace(/([A-Z][a-z])/g, ' $1').trim();
+  if (!stTitle) stTitle = newSrcFolder.replace(/([A-Z][a-z])/g, ' $1').trim();
 
   document.getElementById('goBtn').disabled = true;
   setScan(true, 'Đang dò số tập (audiotruyenfull.app)...');
@@ -1304,4 +1320,4 @@ window.addEventListener('beforeunload', saveProgress);
 renderHistory();
 </script>
 </body>
-                                                           </html>
+        </html>
