@@ -1148,7 +1148,7 @@ async function onLoadNew() {
   if (!stTitle) stTitle = newSrcFolder.replace(/([A-Z][a-z])/g, ' $1').trim();
 
   document.getElementById('goBtn').disabled = true;
-  setScan(true, 'Đang dò số tập (audiotruyenfull.app)...');
+  setScan(true, 'Đang dò số tập (audiotruyenfull.app)... có thể mất 10-30s');
   total = await probeTotal(newSrcFolder, 'new');
   setScan(false);
   document.getElementById('goBtn').disabled = false;
@@ -1171,6 +1171,26 @@ async function onLoadNew() {
 ══════════════════════════════════════════ */
 async function probeTotal(aid, src) {
   let count = 0, off = 1;
+  // Nguồn mới: probe tuần tự (không batch) vì dùng Audio() cần thứ tự rõ
+  if (src === 'new') {
+    // Trước tiên xác nhận tập 1 tồn tại
+    const ok1 = await checkEp(aid, 1, src);
+    if (!ok1) return 0;
+    // Binary-search nhanh: thử tập 10, 20, 50, 100...
+    let hi = 1;
+    for (const probe of [5,10,20,50,100,200,300,500]) {
+      const ok = await checkEp(aid, probe, src);
+      if (ok) hi = probe; else break;
+    }
+    // Scan tuần tự từ hi về sau
+    count = hi;
+    for (let i = hi + 1; i <= hi + 30; i++) {
+      const ok = await checkEp(aid, i, src);
+      if (ok) count = i; else break;
+    }
+    return count;
+  }
+  // Nguồn archive: batch như cũ
   while (true) {
     const batch = [];
     for (let i = off; i < off + 20; i++) batch.push(checkEp(aid, i, src));
@@ -1185,8 +1205,30 @@ async function probeTotal(aid, src) {
   return count;
 }
 
+// Kiểm tra bằng Audio element — hoạt động cross-origin, không bị CORS chặn
+function checkEpAudio(url) {
+  return new Promise(resolve => {
+    const a = new Audio();
+    let done = false;
+    const finish = (v) => { if (!done) { done = true; a.src = ''; resolve(v); } };
+    a.addEventListener('canplay', () => finish(true));
+    a.addEventListener('loadedmetadata', () => finish(true));
+    // error: có thể là 404 hoặc lỗi khác
+    a.addEventListener('error', () => finish(false));
+    // Timeout 8 giây
+    setTimeout(() => finish(false), 8000);
+    a.preload = 'metadata';
+    a.src = url;
+    a.load();
+  });
+}
+
 async function checkEp(aid, ep, src) {
   const url = buildUrlFor(ep, aid, src);
+  if (src === 'new') {
+    // audiotruyenfull.app chặn HEAD fetch → dùng Audio element
+    return await checkEpAudio(url);
+  }
   try {
     const r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(6000) });
     return r.ok || r.redirected || [301, 302, 206].includes(r.status);
@@ -1206,18 +1248,26 @@ function buildUrlFor(ep, aid, src) {
 async function scanMore() {
   const start = total + 1;
   setScan(true, 'Đang tìm tập mới...');
-  const batch = [];
-  for (let i = start; i < start + 20; i++) batch.push(checkEp(archId, i, currentSource));
-  const res = await Promise.all(batch);
-  let added = 0;
-  for (let i = 0; i < res.length; i++) {
-    if (res[i]) { total++; added++; addEpBtn(total); }
-    else break;
+  if (currentSource === 'new') {
+    // Tuần tự cho nguồn mới
+    for (let i = start; i < start + 20; i++) {
+      const ok = await checkEp(archId, i, 'new');
+      if (ok) { total++; addEpBtn(total); }
+      else break;
+    }
+  } else {
+    const batch = [];
+    for (let i = start; i < start + 20; i++) batch.push(checkEp(archId, i, currentSource));
+    const res = await Promise.all(batch);
+    for (let i = 0; i < res.length; i++) {
+      if (res[i]) { total++; addEpBtn(total); }
+      else break;
+    }
   }
   setScan(false);
   document.getElementById('epLabel').textContent = `Danh sách tập (${total})`;
   document.getElementById('epOf').textContent = `/ ${total} tập`;
-  if (!added) document.getElementById('errLine').textContent = 'Chưa có tập mới.';
+  if (total < start) document.getElementById('errLine').textContent = 'Chưa có tập mới.';
 }
 
 function setScan(on, txt) {
@@ -1320,4 +1370,4 @@ window.addEventListener('beforeunload', saveProgress);
 renderHistory();
 </script>
 </body>
-        </html>
+      </html>
