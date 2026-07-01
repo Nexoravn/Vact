@@ -1078,10 +1078,19 @@ async function onLoad() {
   if (!m) { err.textContent = 'Link không đúng định dạng audiotruyenfull.com/...'; return; }
 
   const slug = m[1];
-  archId = slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join('') + 'TH';
-  stTitle = slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+  stTitle = slugToTitle(slug);
 
   document.getElementById('goBtn').disabled = true;
+  setScan(true, 'Đang dò ID chính xác...');
+  const foundId = await resolveWorkingId(slug, 'archive');
+  if (!foundId) {
+    setScan(false);
+    document.getElementById('goBtn').disabled = false;
+    err.textContent = 'Không tìm thấy audio. Kiểm tra lại link.';
+    return;
+  }
+  archId = foundId;
+
   setScan(true, 'Đang dò số tập (archive.org)...');
   total = await probeTotal(archId, 'archive');
   setScan(false);
@@ -1098,12 +1107,44 @@ async function onLoad() {
 }
 
 // Shared slug → folder/prefix converter (same rule for both sources)
-function slugToId(slug) {
+// Một số từ mượn tiếng Anh hay bị viết HOA TOÀN BỘ trong tên truyện
+// (vd: "boss" trong "...Thanh Mau Bat Dau" → "...BOSS...").
+// Đây là nguyên nhân chính khiến việc đoán ID theo kiểu "viết hoa chữ đầu" bị sai.
+const FULL_UPPER_WORDS = new Set([
+  'boss','vip','ceo','npc','pk','pvp','pve','ai','id','hp','mp','exp','lv',
+  'rpg','gps','atm','ss','sss','ngo','otp','dlc','op','ngb','ngu'
+]);
+
+function wordToPascal(w, smart) {
+  if (!w) return '';
+  if (smart && FULL_UPPER_WORDS.has(w.toLowerCase())) return w.toUpperCase();
+  return w[0].toUpperCase() + w.slice(1);
+}
+
+function slugToId(slug, smart) {
   // "xoat-dai-ai-tien-ton-..." → "XoatDaiAiTienTon...TH"
-  return slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join('') + 'TH';
+  return slug.split('-').map(w => wordToPascal(w, smart)).join('') + 'TH';
 }
 function slugToTitle(slug) {
   return slug.split('-').map(w => w ? w[0].toUpperCase() + w.slice(1) : '').join(' ');
+}
+
+// Tạo danh sách các ID có thể xảy ra cho một slug, thử bản "thông minh"
+// (viết hoa toàn bộ từ mượn) trước, sau đó mới tới bản viết hoa chữ đầu thông thường.
+function slugToIdCandidates(slug) {
+  const candidates = [slugToId(slug, true), slugToId(slug, false)];
+  return [...new Set(candidates)];
+}
+
+// Thử từng ID ứng viên bằng cách kiểm tra thật sự tập 1 có tồn tại không,
+// thay vì đoán mù rồi báo lỗi "Không tìm thấy audio" khi đoán sai.
+async function resolveWorkingId(slug, src) {
+  const candidates = slugToIdCandidates(slug);
+  for (const cand of candidates) {
+    const ok = await checkEp(cand, 1, src);
+    if (ok) return cand;
+  }
+  return null;
 }
 
 async function onLoadNew() {
@@ -1125,8 +1166,18 @@ async function onLoadNew() {
     const m2 = mainUrl.match(/audiotruyenfull\.\w+\/([a-z0-9][a-z0-9-]+)\/?/i);
     if (m2) {
       const slug = m2[1];
-      newSrcFolder = slugToId(slug);   // XoatDai...TH
-      newSrcPrefix = newSrcFolder;     // prefix = folder (chuẩn của audiotruyenfull.app)
+      setScan(true, 'Đang dò ID chính xác...');
+      const foundId = await resolveWorkingId(slug, 'new');
+      setScan(false);
+      if (foundId) {
+        newSrcFolder = foundId;        // vd: XoatDaiAiTienTonThanhBOSS...TH
+        newSrcPrefix = newSrcFolder;   // prefix = folder (chuẩn của audiotruyenfull.app)
+      } else {
+        // Không có candidate nào khớp — vẫn điền bản đoán chuẩn để người dùng
+        // có thể tự sửa qua ô "URL audio mẫu" bên dưới nếu cần.
+        newSrcFolder = slugToId(slug, true);
+        newSrcPrefix = newSrcFolder;
+      }
       stTitle = slugToTitle(slug);
     }
   }
