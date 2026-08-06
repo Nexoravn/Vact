@@ -4,33 +4,33 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Nghe Truyện Audio</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #080c10;
-  --bg2: #0d1219;
-  --surface: #111720;
-  --surface2: #181f2b;
-  --surface3: #1e2736;
+  --bg: #070a0d;
+  --bg2: #0c1015;
+  --surface: #11151c;
+  --surface2: #171d26;
+  --surface3: #1e2632;
   --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --green: #00d46a;
+  --border2: rgba(255,255,255,0.14);
+  --green: #14e08a;
   --green2: #00b859;
-  --green-glow: rgba(0,212,106,0.2);
-  --green-dim: rgba(0,212,106,0.08);
-  --green-dim2: rgba(0,212,106,0.14);
-  --blue: #4f8ef7;
-  --blue-dim: rgba(79,142,247,0.1);
+  --green-glow: rgba(20,224,138,0.22);
+  --green-dim: rgba(20,224,138,0.09);
+  --green-dim2: rgba(20,224,138,0.16);
+  --blue: #5b9dff;
+  --blue-dim: rgba(91,157,255,0.1);
   --amber: #f5a623;
   --amber-dim: rgba(245,166,35,0.1);
   --amber-border: rgba(245,166,35,0.28);
   --red: #ff5a5a;
-  --text: #e8eef6;
-  --text2: #7a8799;
-  --text3: #3d4a58;
-  --radius: 14px;
-  --radius-sm: 9px;
-  --radius-xs: 6px;
+  --text: #edf2f8;
+  --text2: #8390a3;
+  --text3: #414d5c;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 7px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,8 +45,9 @@ body {
   justify-content: center;
   padding: 28px 16px 64px;
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% -10%, rgba(0,212,106,0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 80% 100%, rgba(79,142,247,0.05) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgba(20,224,138,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 35% at 90% 15%, rgba(91,157,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 5% 90%, rgba(245,166,35,0.04) 0%, transparent 60%);
 }
 
 .app { width: 100%; max-width: 540px; }
@@ -54,27 +55,28 @@ body {
 /* ── Header ── */
 .header {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
-.logo-row { display: flex; align-items: center; gap: 12px; }
+.logo-row { display: flex; align-items: center; gap: 13px; }
 .logo-icon {
-  width: 40px; height: 40px; border-radius: 12px;
-  background: linear-gradient(135deg, #00d46a 0%, #00a655 100%);
+  width: 42px; height: 42px; border-radius: 13px;
+  background: linear-gradient(135deg, #1bf497 0%, #00964d 100%);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px rgba(0,212,106,0.3);
+  box-shadow: 0 4px 22px rgba(20,224,138,0.32), inset 0 1px 0 rgba(255,255,255,.25);
 }
 .logo-icon svg { width: 22px; height: 22px; }
-.logo-text { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
-.logo-sub { font-size: 11px; color: var(--text2); margin-top: 1px; font-family: 'JetBrains Mono', monospace; }
+.logo-text { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
+.logo-sub { font-size: 10.5px; color: var(--text2); margin-top: 1px; font-family: 'JetBrains Mono', monospace; letter-spacing: .3px; }
 
 .header-actions { display: flex; gap: 6px; }
 .icon-btn {
-  width: 36px; height: 36px; border-radius: 9px;
+  width: 37px; height: 37px; border-radius: 10px;
   background: var(--surface); border: 0.5px solid var(--border2);
   color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: all .15s;
 }
-.icon-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.icon-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); transform: translateY(-1px); }
+.icon-btn:active { transform: translateY(0) scale(.94); }
 .icon-btn.active { color: var(--green); border-color: var(--green-dim2); background: var(--green-dim); }
 
 /* ── Source Tabs ── */
@@ -82,7 +84,7 @@ body {
   display: flex; gap: 6px; margin-bottom: 12px;
 }
 .src-tab {
-  flex: 1; padding: 9px 12px; border-radius: var(--radius-sm);
+  flex: 1; padding: 10px 12px; border-radius: var(--radius-sm);
   border: 0.5px solid var(--border); background: var(--surface);
   color: var(--text2); font-family: inherit; font-size: 12px; font-weight: 500;
   cursor: pointer; transition: all .15s; text-align: center; position: relative;
@@ -100,7 +102,7 @@ body {
 .src-tab.active::before { width: 60%; }
 .src-badge {
   display: inline-block; font-size: 9px; padding: 1px 5px;
-  background: rgba(0,212,106,0.15); color: var(--green);
+  background: rgba(20,224,138,0.15); color: var(--green);
   border-radius: 4px; margin-left: 5px; font-weight: 600; vertical-align: middle;
 }
 .src-badge.new { background: rgba(245,166,35,0.15); color: var(--amber); }
@@ -110,8 +112,9 @@ body {
   background: var(--surface);
   border: 0.5px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px 20px;
+  padding: 19px 20px;
   margin-bottom: 10px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.02) inset, 0 12px 30px -18px rgba(0,0,0,.6);
 }
 label { font-size: 11px; color: var(--text2); display: block; margin-bottom: 8px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
@@ -137,11 +140,11 @@ input[type=text]::placeholder { color: var(--text3); }
 
 .go-btn {
   padding: 11px 22px; border: none; border-radius: var(--radius-sm);
-  background: var(--green); color: #000; font-size: 13px; font-weight: 700;
+  background: linear-gradient(135deg, #1bf497, #00b859); color: #04140c; font-size: 13px; font-weight: 700;
   font-family: inherit; cursor: pointer; white-space: nowrap;
   transition: all .15s; letter-spacing: 0.2px;
 }
-.go-btn:hover { background: #0ff07a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,106,0.35); }
+.go-btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 4px 18px rgba(20,224,138,0.4); }
 .go-btn:active { transform: translateY(0); }
 .go-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -164,7 +167,9 @@ input[type=text]::placeholder { color: var(--text3); }
   display: none; background: var(--surface);
   border: 0.5px solid var(--border); border-radius: var(--radius);
   padding: 16px 20px; margin-bottom: 10px;
+  animation: slideDown .18s ease;
 }
+@keyframes slideDown { from { opacity:0; transform: translateY(-6px);} to {opacity:1; transform:translateY(0);} }
 .history-panel.show { display: block; }
 .history-header {
   display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
@@ -176,7 +181,7 @@ input[type=text]::placeholder { color: var(--text3); }
   font-family: inherit; cursor: pointer; transition: all .12s;
 }
 .clear-hist-btn:hover { color: var(--red); border-color: rgba(255,90,90,0.3); }
-.history-list { display: flex; flex-direction: column; gap: 5px; }
+.history-list { display: flex; flex-direction: column; gap: 5px; max-height: 280px; overflow-y: auto; }
 .hist-item {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 12px; border-radius: var(--radius-sm);
@@ -210,6 +215,7 @@ input[type=text]::placeholder { color: var(--text3); }
   border: 0.5px solid var(--amber-border);
   border-radius: var(--radius); padding: 15px 20px; margin-bottom: 10px;
   position: relative; overflow: hidden;
+  animation: slideDown .18s ease;
 }
 .resume-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -238,6 +244,7 @@ input[type=text]::placeholder { color: var(--text3); }
   background: var(--surface);
   border: 0.5px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 20px 50px -30px rgba(0,0,0,.8);
 }
 .empty {
   padding: 56px 20px; text-align: center;
@@ -252,7 +259,7 @@ input[type=text]::placeholder { color: var(--text3); }
 
 /* ── Banner ── */
 .banner {
-  background: linear-gradient(135deg, #05200f 0%, #0a1a14 50%, #08131f 100%);
+  background: linear-gradient(135deg, #051d10 0%, #0a1712 50%, #08121e 100%);
   border-bottom: 0.5px solid var(--border);
   padding: 22px 20px;
   display: flex; gap: 16px; align-items: center;
@@ -261,22 +268,22 @@ input[type=text]::placeholder { color: var(--text3); }
 .banner::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 85% 30%, rgba(0,212,106,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 10% 80%, rgba(79,142,247,0.06) 0%, transparent 40%);
+    radial-gradient(circle at 85% 30%, rgba(20,224,138,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(91,157,255,0.06) 0%, transparent 40%);
 }
 .cover {
-  width: 72px; height: 72px; border-radius: 12px;
-  background: linear-gradient(135deg, #00d46a, #007a3d);
+  width: 72px; height: 72px; border-radius: 14px;
+  background: linear-gradient(135deg, #1bf497, #007a3d);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #000;
+  font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: #04140c;
   flex-shrink: 0; position: relative; z-index: 1;
-  box-shadow: 0 6px 24px rgba(0,212,106,0.3);
+  box-shadow: 0 6px 26px rgba(20,224,138,0.32), inset 0 1px 0 rgba(255,255,255,.3);
 }
 .banner-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .b-title {
-  font-size: 16px; font-weight: 700; color: #fff;
-  line-height: 1.3; margin-bottom: 4px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -0.2px;
+  font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: #fff;
+  line-height: 1.3; margin-bottom: 5px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -0.1px;
 }
 .b-sub { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 9px; font-family: 'JetBrains Mono', monospace; }
 .badges { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -284,26 +291,51 @@ input[type=text]::placeholder { color: var(--text3); }
   font-size: 10px; padding: 3px 9px; border-radius: 999px;
   font-weight: 600;
 }
-.badge-green { border: 0.5px solid rgba(0,212,106,0.4); background: rgba(0,212,106,0.1); color: #6fcf97; }
-.badge-blue { border: 0.5px solid rgba(79,142,247,0.3); background: rgba(79,142,247,0.1); color: #7eb8ff; }
+.badge-green { border: 0.5px solid rgba(20,224,138,0.4); background: rgba(20,224,138,0.1); color: #74e7ac; }
+.badge-blue { border: 0.5px solid rgba(91,157,255,0.3); background: rgba(91,157,255,0.1); color: #8dc0ff; }
 .badge-gray { border: 0.5px solid var(--border2); background: rgba(255,255,255,.06); color: var(--text2); }
 .badge-amber { border: 0.5px solid var(--amber-border); background: var(--amber-dim); color: var(--amber); }
+
+/* Waveform signature — pulses while playing */
+.wave { display: flex; align-items: flex-end; gap: 3px; height: 16px; position: relative; z-index: 1; flex-shrink: 0; margin-left: auto; }
+.wave span {
+  width: 3px; border-radius: 2px; background: var(--green);
+  height: 4px; opacity: .55; transition: opacity .2s;
+  animation: none;
+}
+.wave.playing span { opacity: 1; animation: wv 900ms ease-in-out infinite; }
+.wave span:nth-child(1){ animation-delay: -.6s; }
+.wave span:nth-child(2){ animation-delay: -.3s; }
+.wave span:nth-child(3){ animation-delay: 0s; }
+.wave span:nth-child(4){ animation-delay: -.45s; }
+.wave span:nth-child(5){ animation-delay: -.15s; }
+@keyframes wv { 0%,100% { height: 4px; } 50% { height: 16px; } }
 
 /* ── Player Body ── */
 .player-body { padding: 20px; }
 
 .ep-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
 .ep-row-left { display: flex; align-items: baseline; gap: 8px; }
-.ep-big { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.ep-big { font-family: 'Fraunces', serif; font-size: 27px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
 .ep-of { font-size: 13px; color: var(--text2); }
 .ep-src-indicator {
   font-size: 10px; padding: 3px 8px; border-radius: 5px;
   font-family: 'JetBrains Mono', monospace; font-weight: 500;
 }
-.ep-src-indicator.archive { background: var(--blue-dim); color: var(--blue); border: 0.5px solid rgba(79,142,247,0.2); }
+.ep-src-indicator.archive { background: var(--blue-dim); color: var(--blue); border: 0.5px solid rgba(91,157,255,0.2); }
 .ep-src-indicator.new-src { background: var(--green-dim); color: var(--green); border: 0.5px solid var(--green-dim2); }
 
 audio { display: none; }
+
+/* ── Tap-to-resume fallback (autoplay blocked) ── */
+.tap-resume-btn {
+  display: none; width: 100%; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px; margin-bottom: 14px; border-radius: var(--radius-sm);
+  border: 0.5px solid var(--green-dim2); background: var(--green-dim);
+  color: var(--green); font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; animation: pulse 1.6s ease infinite;
+}
+.tap-resume-btn.show { display: flex; }
 
 /* ── Progress ── */
 .progress-area { margin-bottom: 6px; position: relative; }
@@ -328,9 +360,9 @@ input[type=range].prog::-moz-range-thumb {
 /* ── Toast ── */
 .toast {
   display: none; align-items: center; gap: 8px;
-  background: var(--green-dim); border: 0.5px solid rgba(0,212,106,0.2);
+  background: var(--green-dim); border: 0.5px solid rgba(20,224,138,0.2);
   border-radius: var(--radius-sm); padding: 9px 13px;
-  font-size: 12px; color: #6fcf97; margin-bottom: 14px;
+  font-size: 12px; color: #74e7ac; margin-bottom: 14px;
 }
 .toast-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 1s ease infinite; }
 
@@ -346,6 +378,7 @@ input[type=range].prog::-moz-range-thumb {
   transition: all .12s; font-family: inherit; font-weight: 600;
 }
 .ctrl-btn:hover { background: var(--surface2); border-color: var(--border2); }
+.ctrl-btn:active { transform: scale(.93); }
 .ctrl-btn:disabled { opacity: .22; cursor: not-allowed; }
 .ctrl-skip { width: 42px; height: 44px; font-size: 11px; flex-direction: column; gap: 1px; color: var(--text2); }
 .ctrl-skip span:first-child { font-size: 16px; line-height: 1; }
@@ -353,11 +386,12 @@ input[type=range].prog::-moz-range-thumb {
 .ctrl-ep svg { width: 20px; height: 20px; }
 .ctrl-play {
   width: 62px; height: 62px; border-radius: 50%;
-  background: var(--green); border-color: var(--green);
-  color: #000; margin: 0 5px;
-  box-shadow: 0 4px 20px rgba(0,212,106,0.4);
+  background: linear-gradient(135deg, #1bf497, #00b859); border-color: transparent;
+  color: #04140c; margin: 0 5px;
+  box-shadow: 0 4px 22px rgba(20,224,138,0.42);
 }
-.ctrl-play:hover { background: #0ff07a; border-color: #0ff07a; box-shadow: 0 6px 28px rgba(0,212,106,0.5); transform: scale(1.04); }
+.ctrl-play:hover { filter: brightness(1.06); box-shadow: 0 6px 30px rgba(20,224,138,0.52); transform: scale(1.04); }
+.ctrl-play:active { transform: scale(.97); }
 .ctrl-play svg { width: 26px; height: 26px; }
 .ctrl-speed {
   width: 44px; height: 44px; font-size: 12px; font-weight: 700;
@@ -417,14 +451,14 @@ input[type=range].prog::-moz-range-thumb {
 .ep-grid::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 .ep-btn {
   width: 56px; padding: 6px 0; text-align: center;
-  border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+  border: 0.5px solid var(--border); border-radius: 999px;
   background: transparent; color: var(--text2); font-size: 12px;
   font-family: inherit; cursor: pointer; transition: all .12s;
 }
 .ep-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
 .ep-btn.past { color: var(--text3); border-color: transparent; background: rgba(255,255,255,.025); }
 .ep-btn.active {
-  background: var(--green); color: #000; border-color: var(--green);
+  background: linear-gradient(135deg, #1bf497, #00b859); color: #04140c; border-color: transparent;
   font-weight: 700; box-shadow: 0 2px 14px var(--green-glow);
 }
 
@@ -445,7 +479,7 @@ input[type=range].prog::-moz-range-thumb {
   font-family: inherit; cursor: pointer; white-space: nowrap; transition: all .12s;
 }
 .cp-btn:hover { background: var(--surface2); color: var(--text); }
-.cp-btn.copied { color: var(--green); border-color: rgba(0,212,106,0.4); }
+.cp-btn.copied { color: var(--green); border-color: rgba(20,224,138,0.4); }
 
 /* ── Sleep timer countdown ── */
 .sleep-display {
@@ -489,14 +523,14 @@ input[type=range].vol::-webkit-slider-thumb {
   <div class="logo-row">
     <div class="logo-icon">
       <svg viewBox="0 0 24 24" fill="none">
-        <path d="M9 18V5l12-2v13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="6" cy="18" r="3" fill="white"/>
-        <circle cx="18" cy="16" r="3" fill="white"/>
+        <path d="M9 18V5l12-2v13" stroke="#04140c" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="6" cy="18" r="3" fill="#04140c"/>
+        <circle cx="18" cy="16" r="3" fill="#04140c"/>
       </svg>
     </div>
     <div>
       <div class="logo-text">Nghe Truyện</div>
-      <div class="logo-sub">audio player v2</div>
+      <div class="logo-sub">audio player v2.1</div>
     </div>
   </div>
   <div class="header-actions">
@@ -552,7 +586,7 @@ input[type=range].vol::-webkit-slider-thumb {
       <input type="text" id="sampleUrl" placeholder="https://audiotruyenfull.app/audio/Folder/001-Prefix.mp3  (nếu link trên không đủ)"
         oninput="onSampleChange()"/>
     </div>
-    <div class="hint" style="margin-top:6px; color: var(--green); opacity:.75;">
+    <div class="hint" style="margin-top:6px; color: var(--green); opacity:.85;">
       ✅ Chỉ cần dán link trang truyện bên trên là đủ · Ô này chỉ dùng khi cần ghi đè prefix
     </div>
   </div>
@@ -562,7 +596,7 @@ input[type=range].vol::-webkit-slider-thumb {
     <span id="scanTxt">Đang dò số tập...</span>
   </div>
   <div class="err" id="errLine"></div>
-  <div class="hint" id="hintText">Tự nhận số tập · Lưu tiến độ · Tự chuyển tập · Hẹn giờ ngủ</div>
+  <div class="hint" id="hintText">Tự nhận số tập · Lưu tiến độ &amp; tốc độ phát · Tự chuyển tập · Hẹn giờ ngủ</div>
 </div>
 
 <!-- Resume Card -->
@@ -583,9 +617,9 @@ input[type=range].vol::-webkit-slider-thumb {
   <div id="emptyState" class="empty">
     <div class="empty-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-        <path d="M9 18V5l12-2v13" stroke="#00d46a" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="6" cy="18" r="3" fill="#00d46a"/>
-        <circle cx="18" cy="16" r="3" fill="#00d46a"/>
+        <path d="M9 18V5l12-2v13" stroke="#14e08a" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="6" cy="18" r="3" fill="#14e08a"/>
+        <circle cx="18" cy="16" r="3" fill="#14e08a"/>
       </svg>
     </div>
     <div class="empty-text">Dán link truyện bên trên<br/>rồi nhấn <strong>Tải truyện</strong> để bắt đầu</div>
@@ -598,6 +632,9 @@ input[type=range].vol::-webkit-slider-thumb {
         <div class="b-title" id="bTitle">—</div>
         <div class="b-sub" id="bSub"></div>
         <div class="badges" id="bBadges"></div>
+      </div>
+      <div class="wave" id="wave">
+        <span></span><span></span><span></span><span></span><span></span>
       </div>
     </div>
 
@@ -620,6 +657,10 @@ input[type=range].vol::-webkit-slider-thumb {
         <input type="range" class="vol" id="volSlider" min="0" max="100" value="100" oninput="setVolume()"/>
         <div class="vol-val" id="volVal">100%</div>
       </div>
+
+      <button class="tap-resume-btn" id="tapResumeBtn" onclick="forcePlay()">
+        ▶ Trình duyệt chặn tự phát — chạm để nghe tiếp
+      </button>
 
       <div class="progress-area">
         <input type="range" class="prog" id="pb" min="0" value="0" step="1"
@@ -757,12 +798,13 @@ function fmt(s) {
 
 function updatePbStyle() {
   const pct = pb.max > 0 ? (pb.value / pb.max) * 100 : 0;
-  pb.style.background = `linear-gradient(to right, #00d46a ${pct}%, #1e2736 ${pct}%)`;
+  pb.style.background = `linear-gradient(to right, #14e08a ${pct}%, #1e2632 ${pct}%)`;
 }
 
 function setIcon(playing) {
   document.getElementById('playIcon').style.display = playing ? 'none' : 'block';
   document.getElementById('pauseIcon').style.display = playing ? 'block' : 'none';
+  document.getElementById('wave').classList.toggle('playing', playing);
 }
 
 function onSeek() {
@@ -773,7 +815,7 @@ function onSeek() {
 function endSeek() {
   isDragging = false;
   ap.currentTime = parseInt(pb.value);
-  if (ap.paused) ap.play().catch(() => {});
+  if (ap.paused) attemptPlay();
 }
 
 function skip(s) {
@@ -782,16 +824,49 @@ function skip(s) {
   onSeek();
 }
 
+/* Central place that actually calls .play() and reacts to autoplay
+   being blocked by the browser (this is what used to leave the
+   player "standing still" after auto-advancing to a new episode). */
+function attemptPlay() {
+  const p = ap.play();
+  if (p && typeof p.then === 'function') {
+    p.then(() => {
+      document.getElementById('tapResumeBtn').classList.remove('show');
+    }).catch(() => {
+      setIcon(false);
+      document.getElementById('tapResumeBtn').classList.add('show');
+    });
+  }
+}
+
+function forcePlay() {
+  attemptPlay();
+}
+
 function togglePlay() {
-  if (ap.paused) ap.play().catch(() => {}); else ap.pause();
+  if (ap.paused) attemptPlay(); else ap.pause();
 }
 
 function changeSpeed() {
   let idx = speeds.indexOf(playbackSpeed);
   idx = (idx + 1) % speeds.length;
-  playbackSpeed = speeds[idx];
-  ap.playbackRate = playbackSpeed;
-  document.getElementById('speedBtn').textContent = playbackSpeed + 'x';
+  applySpeed(speeds[idx]);
+}
+
+/* Sets + persists playback speed so it survives episode changes,
+   "nghe tiếp" (resume), and reloading the page later. */
+function applySpeed(v) {
+  playbackSpeed = v;
+  ap.playbackRate = v;
+  document.getElementById('speedBtn').textContent = v + 'x';
+  try { localStorage.setItem('lastSpeed', String(v)); } catch(e) {}
+}
+
+function initSpeed() {
+  try {
+    const s = parseFloat(localStorage.getItem('lastSpeed'));
+    if (s && speeds.includes(s)) applySpeed(s);
+  } catch(e) {}
 }
 
 function toggleLoop() {
@@ -806,8 +881,12 @@ function onEnded() {
   saveProgress();
   if (isLooping) return;
   if (cur < total) {
-    showToast('Tự chuyển sang Tập ' + (cur + 1) + '...', true);
-    toastTimer = setTimeout(() => { hideToast(); changeEp(1); }, 2500);
+    // Chuyển tập ngay lập tức (không delay) để trình duyệt vẫn coi đây là
+    // một phần của phiên phát đang chạy — nếu chờ bằng setTimeout, một số
+    // trình duyệt (đặc biệt Safari/iOS) sẽ chặn tự phát và bắt bấm lại.
+    showToast('Đang chuyển sang Tập ' + (cur + 1) + '...', true);
+    changeEp(1);
+    toastTimer = setTimeout(hideToast, 1800);
   } else {
     showToast('🎉 Đã nghe hết ' + total + ' tập!', false);
     setTimeout(hideToast, 4000);
@@ -829,7 +908,7 @@ function setVolume() {
   document.getElementById('volVal').textContent = v + '%';
   const pct = v;
   document.getElementById('volSlider').style.background =
-    `linear-gradient(to right, #00d46a ${pct}%, #1e2736 ${pct}%)`;
+    `linear-gradient(to right, #14e08a ${pct}%, #1e2632 ${pct}%)`;
 }
 
 /* ══════════════════════════════════════════
@@ -893,7 +972,8 @@ function saveProgress() {
       ep: cur, time: Math.floor(ap.currentTime),
       title: stTitle, total, savedAt: Date.now(),
       source: currentSource, folder: newSrcFolder, prefix: newSrcPrefix,
-      url: document.getElementById('urlIn').value.trim()
+      url: document.getElementById('urlIn').value.trim(),
+      speed: playbackSpeed
     }));
   } catch(e) {}
 }
@@ -906,8 +986,9 @@ function loadProgress(aid) {
 function showResume(data) {
   resumeData = data;
   const m = Math.floor(data.time / 60), s = data.time % 60;
+  const speedNote = data.speed && data.speed !== 1 ? ` · ${data.speed}x` : '';
   document.getElementById('resumeInfo').textContent =
-    `"${data.title}" · Tập ${data.ep} tại ${m}:${String(s).padStart(2,'0')}`;
+    `"${data.title}" · Tập ${data.ep} tại ${m}:${String(s).padStart(2,'0')}${speedNote}`;
   document.getElementById('resumeCard').style.display = 'block';
 }
 function dismissResume() {
@@ -917,6 +998,7 @@ function dismissResume() {
 function doResume() {
   if (!resumeData) return;
   const ep = resumeData.ep, t = resumeData.time;
+  if (resumeData.speed && speeds.includes(resumeData.speed)) applySpeed(resumeData.speed);
   dismissResume();
   playEp(ep, t);
 }
@@ -1025,7 +1107,7 @@ function switchSource(src, silent) {
 
   if (src === 'archive') {
     document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.com/ten-truyen/';
-    document.getElementById('hintText').textContent = 'Nguồn: Archive.org · Tự nhận số tập · Lưu tiến độ';
+    document.getElementById('hintText').textContent = 'Nguồn: Archive.org · Tự nhận số tập · Lưu tiến độ & tốc độ phát';
   } else {
     document.getElementById('urlIn').placeholder = 'https://audiotruyenfull.com/ten-truyen/';
     document.getElementById('hintText').textContent = 'Cùng link như bình thường · Tự chuyển sang audiotruyenfull.app để lấy audio';
@@ -1371,6 +1453,7 @@ function playEp(ep, seekTo) {
   if (ep < 1 || ep > total) return;
   if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
   hideToast();
+  document.getElementById('tapResumeBtn').classList.remove('show');
   cur = ep;
   const url = buildUrl(ep);
   ap.src = url; ap.load();
@@ -1379,7 +1462,7 @@ function playEp(ep, seekTo) {
     if (seekTo > 0) ap.currentTime = seekTo;
     ap.playbackRate = playbackSpeed;
     ap.loop = isLooping;
-    ap.play().catch(() => {});
+    attemptPlay();
     pb.value = seekTo || 0;
     document.getElementById('tCur').textContent = fmt(seekTo || 0);
     updatePbStyle();
@@ -1418,6 +1501,7 @@ function copyUrl() {
 window.addEventListener('beforeunload', saveProgress);
 
 // Init
+initSpeed();
 renderHistory();
 </script>
 </body>
